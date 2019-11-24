@@ -16,6 +16,7 @@
 		5BEE4E12238B2C8200C379A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5BEE4E10238B2C8200C379A8 /* LaunchScreen.storyboard */; };
 		5BEE4E1D238B2C8200C379A8 /* RecipesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E1C238B2C8200C379A8 /* RecipesTests.swift */; };
 		5BEE4E28238B2C8300C379A8 /* RecipesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E27238B2C8300C379A8 /* RecipesUITests.swift */; };
+		5BEE4E36238B332A00C379A8 /* CustomAngleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E35238B332A00C379A8 /* CustomAngleLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		5BEE4E23238B2C8200C379A8 /* RecipesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BEE4E27238B2C8300C379A8 /* RecipesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesUITests.swift; sourceTree = "<group>"; };
 		5BEE4E29238B2C8300C379A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5BEE4E35238B332A00C379A8 /* CustomAngleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAngleLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				5BEE4E10238B2C8200C379A8 /* LaunchScreen.storyboard */,
 				5BEE4E13238B2C8200C379A8 /* Info.plist */,
 				5BEE4E0B238B2C8200C379A8 /* Recipes.xcdatamodeld */,
+				5BEE4E35238B332A00C379A8 /* CustomAngleLabel.swift */,
 			);
 			path = Recipes;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BEE4E07238B2C8200C379A8 /* ViewController.swift in Sources */,
+				5BEE4E36238B332A00C379A8 /* CustomAngleLabel.swift in Sources */,
 				5BEE4E03238B2C8200C379A8 /* AppDelegate.swift in Sources */,
 				5BEE4E05238B2C8200C379A8 /* SceneDelegate.swift in Sources */,
 				5BEE4E0D238B2C8200C379A8 /* Recipes.xcdatamodeld in Sources */,

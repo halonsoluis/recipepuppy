@@ -17,27 +17,32 @@ protocol RecipesListRouterPresenterInterface: RouterPresenterInterface {
 // MARK: - presenter
 
 protocol RecipesListPresenterRouterInterface: PresenterRouterInterface {
-
+    func pushToDetailScreen()
 }
 
 protocol RecipesListPresenterInteractorInterface: PresenterInteractorInterface {
-
+    func recipeFetchedSuccess(recipes:Array<ModelRecipe>)
+    func recipeFetchFailed()
 }
 
 protocol RecipesListPresenterViewInterface: PresenterViewInterface {
     func start()
+    func fetchMore()
+    func ingredientsChanged(_ ingredients: String)
 }
 
 // MARK: - interactor
 
 protocol RecipesListInteractorPresenterInterface: InteractorPresenterInterface {
-
+    func fetchRecipes()
+    func searchByIngredients(_ ingredients: String)
 }
 
 // MARK: - view
 
 protocol RecipesListViewPresenterInterface: ViewPresenterInterface {
-
+    func showRecipes(recipes:Array<ModelRecipe>)
+    func showError()
 }
 
 

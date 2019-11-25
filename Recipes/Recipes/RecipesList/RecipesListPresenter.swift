@@ -17,17 +17,37 @@ final class RecipesListPresenter: PresenterInterface {
 }
 
 extension RecipesListPresenter: RecipesListPresenterRouterInterface {
+    func pushToDetailScreen() {
+
+    }
 
 }
 
 extension RecipesListPresenter: RecipesListPresenterInteractorInterface {
+    func recipeFetchedSuccess(recipes: Array<ModelRecipe>) {
+        view.showRecipes(recipes: recipes)
+    }
+
+    func recipeFetchFailed() {
+
+    }
+
 
 }
 
 extension RecipesListPresenter: RecipesListPresenterViewInterface {
 
     func start() {
+        interactor.fetchRecipes()
+    }
 
+    func fetchMore() {
+        interactor.fetchRecipes()
+    }
+
+    func ingredientsChanged(_ ingredients: String) {
+        interactor.searchByIngredients(ingredients)
+        interactor.fetchRecipes()
     }
 
 }

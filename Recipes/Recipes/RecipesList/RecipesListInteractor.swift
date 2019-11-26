@@ -96,7 +96,7 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
 
                     guard let strongSelf = self else { return }
 
-                    let newRecipes = strongSelf.prepareData(newRecipes: Array(Set(response.results)))
+                    let newRecipes = strongSelf.prepareData(newRecipes: response.results)
 
                     strongSelf.recipes.append(contentsOf: newRecipes)
                     strongSelf.presenter.recipeFetchedSuccess(recipes: strongSelf.recipes)

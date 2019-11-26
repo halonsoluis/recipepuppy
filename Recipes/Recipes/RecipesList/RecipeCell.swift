@@ -102,6 +102,12 @@ class RecipeCell: UITableViewCell {
             )
         }
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.recipeImage.kf.cancelDownloadTask()
+    }
 }
 
 // MARK: Initialisers

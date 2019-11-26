@@ -17,6 +17,17 @@ struct ModelRecipe: Codable {
 
 }
 
+extension ModelRecipe: Equatable, Hashable {
+    static func ==(lhs: ModelRecipe, rhs: ModelRecipe) -> Bool {
+        return lhs.href == rhs.href
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(href)
+    }
+
+}
+
 extension ModelRecipe {
     var hasLactose: Bool {
        return ingredients.lowercased().contains("milk") || ingredients.lowercased().contains("cheese")
@@ -26,12 +37,6 @@ extension ModelRecipe {
         return URL(string: thumbnail)
     }
 
-    var curatedTitle: String {
-        return title.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-    var curatedIngredients: String {
-        return ingredients.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
     var favorited: Bool {
         return false
     }

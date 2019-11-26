@@ -74,12 +74,28 @@ final class RecipesListView: UIViewController, ViewInterface {
         recipes
             .observeOn(MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: "RecipeCell")) { (_, recipe: ModelRecipe, cell: RecipeCell) in
-                cell.setTitle(recipe.curatedTitle)
-                cell.setIngredients(recipe.curatedIngredients)
+                cell.setTitle(recipe.title)
+                cell.setIngredients(recipe.ingredients)
                 cell.setHasLactose(recipe.hasLactose)
                 cell.setImage(recipe.image)
                 cell.setFavorited(recipe.favorited)
         }.disposed(by: disposeBag)
+
+        tableView.rx.contentOffset
+            .asDriver()
+            .throttle(.milliseconds(300))
+            .drive(onNext: { [weak self] _ in
+                guard let strongSelf = self else { return }
+
+                //Fetch at 80% of the content size
+                let tableView = strongSelf.tableView
+                let isAtFetchingPosition = tableView.contentOffset.y + tableView.frame.size.height > tableView.contentSize.height * 0.8
+
+                if isAtFetchingPosition {
+                    strongSelf.presenter.fetchMore()
+                }
+            }).disposed(by: disposeBag)
+
     }
 }
 
@@ -98,7 +114,7 @@ extension RecipesListView {
     private func createSearchBar() -> UISearchBar {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .prominent
-        searchBar.placeholder = "Insert ingredients here separated by comma"
+        searchBar.placeholder = "Ingredients: onion, garlic"
         
         return searchBar
     }

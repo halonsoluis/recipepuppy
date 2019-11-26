@@ -13,7 +13,6 @@ final class RecipesListPresenter: PresenterInterface {
     var router: RecipesListRouterPresenterInterface!
     var interactor: RecipesListInteractorPresenterInterface!
     weak var view: RecipesListViewPresenterInterface!
-
 }
 
 extension RecipesListPresenter: RecipesListPresenterRouterInterface {
@@ -38,7 +37,6 @@ extension RecipesListPresenter: RecipesListPresenterInteractorInterface {
 extension RecipesListPresenter: RecipesListPresenterViewInterface {
 
     func start() {
-        interactor.fetchRecipes()
     }
 
     func fetchMore() {
@@ -46,8 +44,8 @@ extension RecipesListPresenter: RecipesListPresenterViewInterface {
     }
 
     func ingredientsChanged(_ ingredients: String) {
-        interactor.searchByIngredients(ingredients)
-        interactor.fetchRecipes()
+        if interactor.searchByIngredients(ingredients) {
+            interactor.fetchRecipes()
+        }
     }
-
 }

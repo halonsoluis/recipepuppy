@@ -35,7 +35,7 @@ protocol RecipesListPresenterViewInterface: PresenterViewInterface {
 
 protocol RecipesListInteractorPresenterInterface: InteractorPresenterInterface {
     func fetchRecipes()
-    func searchByIngredients(_ ingredients: String)
+    func searchByIngredients(_ ingredients: String) -> Bool
 }
 
 // MARK: - view

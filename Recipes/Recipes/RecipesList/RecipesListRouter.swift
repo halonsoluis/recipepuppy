@@ -17,5 +17,10 @@ final class RecipesListRouter: RouterInterface {
 }
 
 extension RecipesListRouter: RecipesListRouterPresenterInterface {
+    func pushToDetailScreen(recipe: ModelRecipe) {
 
+        let details = DetailWebPage()
+        viewController?.navigationController?.pushViewController(details, animated: true)
+        details.loadDetails(for: recipe)
+    }
 }

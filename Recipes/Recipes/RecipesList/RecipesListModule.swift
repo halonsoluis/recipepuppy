@@ -11,13 +11,13 @@ import UIKit
 // MARK: - router
 
 protocol RecipesListRouterPresenterInterface: RouterPresenterInterface {
-
+    func pushToDetailScreen(recipe: ModelRecipe)
 }
 
 // MARK: - presenter
 
 protocol RecipesListPresenterRouterInterface: PresenterRouterInterface {
-    func pushToDetailScreen()
+
 }
 
 protocol RecipesListPresenterInteractorInterface: PresenterInteractorInterface {
@@ -28,6 +28,7 @@ protocol RecipesListPresenterInteractorInterface: PresenterInteractorInterface {
 protocol RecipesListPresenterViewInterface: PresenterViewInterface {
     func start()
     func fetchMore()
+    func openDetail(recipe: ModelRecipe)
     func ingredientsChanged(_ ingredients: String)
 }
 

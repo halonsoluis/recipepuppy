@@ -16,10 +16,7 @@ final class RecipesListPresenter: PresenterInterface {
 }
 
 extension RecipesListPresenter: RecipesListPresenterRouterInterface {
-    func pushToDetailScreen() {
-
-    }
-
+    
 }
 
 extension RecipesListPresenter: RecipesListPresenterInteractorInterface {
@@ -41,6 +38,10 @@ extension RecipesListPresenter: RecipesListPresenterViewInterface {
 
     func fetchMore() {
         interactor.fetchRecipes()
+    }
+
+    func openDetail(recipe: ModelRecipe) {
+        router.pushToDetailScreen(recipe: recipe)
     }
 
     func ingredientsChanged(_ ingredients: String) {

@@ -96,6 +96,12 @@ final class RecipesListView: UIViewController, ViewInterface {
                 }
             }).disposed(by: disposeBag)
 
+        tableView.rx.modelSelected(ModelRecipe.self)
+            .asDriver()
+            .drive(onNext: { [weak self] item in
+                self?.presenter.openDetail(recipe: item)
+            }).disposed(by: disposeBag)
+
     }
 }
 

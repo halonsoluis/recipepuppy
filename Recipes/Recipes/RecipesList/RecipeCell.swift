@@ -96,7 +96,9 @@ class RecipeCell: UITableViewCell {
         self.recipeImage.kf.indicatorType = .activity
         DispatchQueue.main.async {
             self.recipeImage.kf.setImage(
-                with: image
+                with: image,
+                placeholder: UIImage(named:"No Image"),
+                options: [.transition(ImageTransition.fade(1))]
             )
         }
     }

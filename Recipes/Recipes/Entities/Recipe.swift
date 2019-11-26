@@ -25,4 +25,14 @@ extension ModelRecipe {
     var image: URL? {
         return URL(string: thumbnail)
     }
+
+    var curatedTitle: String {
+        return title.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    var curatedIngredients: String {
+        return ingredients.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    var favorited: Bool {
+        return false
+    }
 }

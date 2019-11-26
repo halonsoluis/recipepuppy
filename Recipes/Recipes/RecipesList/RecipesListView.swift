@@ -74,10 +74,11 @@ final class RecipesListView: UIViewController, ViewInterface {
         recipes
             .observeOn(MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: "RecipeCell")) { (_, recipe: ModelRecipe, cell: RecipeCell) in
-                cell.setTitle(recipe.title)
-                cell.setIngredients(recipe.ingredients)
+                cell.setTitle(recipe.curatedTitle)
+                cell.setIngredients(recipe.curatedIngredients)
                 cell.setHasLactose(recipe.hasLactose)
                 cell.setImage(recipe.image)
+                cell.setFavorited(recipe.favorited)
         }.disposed(by: disposeBag)
     }
 }

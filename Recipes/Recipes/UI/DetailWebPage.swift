@@ -31,6 +31,7 @@ final class DetailWebPage: UIViewController {
     func loadDetails(for recipe: ModelRecipe) {
         title = recipe.title
         if let url = URL(string: recipe.href) {
+            //webView.tale
             webView.load(URLRequest(url: url))
         }
     }

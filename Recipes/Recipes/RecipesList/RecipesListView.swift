@@ -27,22 +27,14 @@ final class RecipesListView: UIViewController, ViewInterface {
         super.viewDidLoad()
 
         setupInterface()
-        self.presenter.start()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         setupRx()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        disposeBag = DisposeBag()
+        self.presenter.start()
     }
 
     private func setupInterface() {
 
         title = "Recipes"
+        view.backgroundColor = .white
 
         view.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
@@ -54,10 +46,10 @@ final class RecipesListView: UIViewController, ViewInterface {
 
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).inset(4)
+            make.top.equalTo(searchBar.snp.bottom).offset(4)
             make.width.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalToSuperview()
         }
     }
 

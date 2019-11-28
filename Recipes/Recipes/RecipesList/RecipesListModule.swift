@@ -30,6 +30,7 @@ protocol RecipesListPresenterViewInterface: PresenterViewInterface {
     func fetchMore()
     func openDetail(recipe: ModelRecipe)
     func ingredientsChanged(_ ingredients: String)
+    func toggleFavorite(recipe: ModelRecipe)
 }
 
 // MARK: - interactor
@@ -37,6 +38,7 @@ protocol RecipesListPresenterViewInterface: PresenterViewInterface {
 protocol RecipesListInteractorPresenterInterface: InteractorPresenterInterface {
     func fetchRecipes()
     func searchByIngredients(_ ingredients: String) -> Bool
+    func toggleFavorite(recipe: ModelRecipe)
 }
 
 // MARK: - view

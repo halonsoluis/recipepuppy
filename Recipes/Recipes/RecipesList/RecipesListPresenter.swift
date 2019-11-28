@@ -31,6 +31,9 @@ extension RecipesListPresenter: RecipesListPresenterInteractorInterface {
 }
 
 extension RecipesListPresenter: RecipesListPresenterViewInterface {
+    func toggleFavorite(recipe: ModelRecipe) {
+        interactor.toggleFavorite(recipe: recipe)
+    }
 
     func start() {
     }

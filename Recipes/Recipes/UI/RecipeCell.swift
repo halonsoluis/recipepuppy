@@ -19,6 +19,8 @@ class RecipeCell: UITableViewCell {
     private lazy var recipeImage: UIImageView = self.createRecipeImageView()
     private lazy var makeFavorite: UIButton = self.createMakeFavoriteButton()
 
+    var toggleFavorite: (()->Void)?
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -55,6 +57,7 @@ class RecipeCell: UITableViewCell {
         makeFavorite.snp.contentCompressionResistanceHorizontalPriority = 1000
         makeFavorite.snp.makeConstraints { make in
             make.center.equalTo(guide.snp.center)
+            make.width.equalTo(160)
         }
 
         titleLabel.snp.makeConstraints { make in
@@ -97,7 +100,7 @@ class RecipeCell: UITableViewCell {
 
         makeFavorite.setImage(image?.withTintColor(.black), for: .normal)
 
-        let text = favorited ? "Remove favorite" : "Make favorite"
+        let text = favorited ? " Remove favorite" : "   Make favorite"
         makeFavorite.setTitle(text, for: .normal)
     }
 
@@ -118,7 +121,8 @@ class RecipeCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
+        toggleFavorite = nil
         self.recipeImage.kf.cancelDownloadTask()
     }
 }
@@ -180,6 +184,11 @@ extension RecipeCell {
         favorite.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         favorite.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 12)
 
+        favorite.addTarget(self, action:#selector(handleTapInFavoriteButton), for: .touchUpInside)
         return favorite
+    }
+
+    @objc private func handleTapInFavoriteButton() {
+        toggleFavorite?()
     }
 }

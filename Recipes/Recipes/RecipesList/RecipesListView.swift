@@ -73,14 +73,10 @@ final class RecipesListView: UIViewController, ViewInterface {
             }).disposed(by: disposeBag)
 
         recipes
-            .flatMap { Observable.from(optional: $0) } //unwrap
             .distinctUntilChanged()
-            .bind(to: self.tableView.rx.items(cellIdentifier: "RecipeCell")) { (_, recipe: ModelRecipe, cell: RecipeCell) in
-                cell.setTitle(recipe.title)
-                cell.setIngredients(recipe.ingredients)
-                cell.setHasLactose(recipe.hasLactose)
-                cell.setImage(recipe.image)
-                cell.setFavorited(recipe.favorited)
+            .flatMap { Observable.from(optional: $0) } //unwrap
+            .bind(to: self.tableView.rx.items(cellIdentifier: "RecipeCell")) { [weak self] (_, recipe: ModelRecipe, cell: RecipeCell) in
+                self?.prepareCell(recipe: recipe, cell: cell)
         }.disposed(by: self.disposeBag)
 
         tableView.rx.contentOffset
@@ -103,6 +99,18 @@ final class RecipesListView: UIViewController, ViewInterface {
             .drive(onNext: { [weak self] item in
                 self?.presenter.openDetail(recipe: item)
             }).disposed(by: disposeBag)
+    }
+
+    private func prepareCell(recipe: ModelRecipe, cell: RecipeCell) {
+        cell.setTitle(recipe.title)
+        cell.setIngredients(recipe.ingredients)
+        cell.setHasLactose(recipe.hasLactose)
+        cell.setImage(recipe.image)
+        cell.setFavorited(recipe.favorited)
+
+        cell.toggleFavorite = { [weak self] in
+            self?.presenter.toggleFavorite(recipe: recipe)
+        }
     }
 }
 

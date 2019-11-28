@@ -56,7 +56,7 @@ extension RecipeAPIService: APIServiceInterface {
     }
 
     // TODO: Handle errors
-    func fetchRecipes(ingredients: String, page: String, completionHandler: @escaping ([ModelRecipe]?) -> Void) {
+    func fetchRecipes(ingredients: String, page: String, completionHandler: @escaping ([RecipeData]?) -> Void) {
         guard allowedToRequest(), let request = prepareRequest(ingredients, page) else { return  completionHandler(nil) }
 
         let dataTask = session

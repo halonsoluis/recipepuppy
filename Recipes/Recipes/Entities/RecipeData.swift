@@ -1,5 +1,5 @@
 //
-//  RecipeEnvelope.swift
+//  RecipeData.swift
 //  Recipes
 //
 //  Created by Hugo Alonso on 25/11/2019.
@@ -8,9 +8,10 @@
 
 import Foundation
 
-struct RecipeEnvelope: Codable {
+struct RecipeData: Codable {
+
     var title: String
-    var version: Float
     var href: String
-    var results: [RecipeData]
+    var ingredients: String
+    var thumbnail: String
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias APIResponse = ([ModelRecipe]?) -> Void
+typealias APIResponse = ([RecipeData]?) -> Void
 protocol APIServiceInterface {
     func fetchRecipes(ingredients: String, page: String, completionHandler: @escaping APIResponse)
 }

@@ -17,13 +17,27 @@ final class RecipesListInteractor: InteractorInterface {
     private var ingredients: String = ""
 
     private let api: APIServiceInterface
+    private let persistence: PersitenceServiceInterface
 
-    init(api: APIServiceInterface = ServiceFactory().api) {
+    init(api: APIServiceInterface = ServiceFactory().api,
+         persistence: PersitenceServiceInterface = ServiceFactory().persistence) {
         self.api = api
+        self.persistence = persistence
     }
 }
 
 extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
+
+    func toggleFavorite(recipe: ModelRecipe) {
+        var favorited: Bool = false
+        if let index = recipes.lastIndex(where: { $0.href == recipe.href }) {
+            recipes[index].favorited = !recipe.favorited
+            favorited = recipes[index].favorited
+        }
+        presenter.recipeFetchedSuccess(recipes: recipes)
+
+        favorited ? persistence.save(recipe: recipe) : persistence.remove(recipe: recipe)
+    }
 
     private func curatedIngredients(_ ingredients: String) -> String {
         var ingredientsWithoutSpaces = ingredients.replacingOccurrences(of: ", ", with: ",")
@@ -50,7 +64,7 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
         recipes = []
     }
 
-    private func handleResponse(newRecipes: [ModelRecipe]?) {
+    private func handleResponse(newRecipes: [RecipeData]?) {
         if let newRecipes = newRecipes {
             lastPageLoaded = lastPageLoaded + 1
             print("Fetched page \(lastPageLoaded) for ingredients: \(ingredients)")
@@ -62,8 +76,9 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
         }
     }
 
-    private func prepareData(_ newRecipes: [ModelRecipe]) -> [ModelRecipe] {
+    private func prepareData(_ newRecipes: [RecipeData]) -> [ModelRecipe] {
         return newRecipes
+            .map { ModelRecipe(data: $0) }
             .filter { !recipes.contains($0) }
             .map {
                 var recipe = $0

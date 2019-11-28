@@ -19,7 +19,7 @@ final class RecipesListView: UIViewController, ViewInterface {
     private lazy var searchBar: UISearchBar = createSearchBar()
     private lazy var tableView: UITableView = createTableView()
 
-    private var recipes = BehaviorRelay<[ModelRecipe]>(value: [])
+    private var recipes = BehaviorRelay<[ModelRecipe]?>(value: nil)
 
     private var disposeBag: DisposeBag = DisposeBag()
 
@@ -27,7 +27,15 @@ final class RecipesListView: UIViewController, ViewInterface {
         super.viewDidLoad()
 
         setupInterface()
-        setupRx()
+
+        //Needed for circumvent the issue:
+        //    https://github.com/ReactiveX/RxSwift/issues/2081
+        //    https://github.com/RxSwiftCommunity/RxDataSources/issues/331
+        // Once it's solved, it's safe to move the call to setupRX back into viewDidLoad() without the async.
+        DispatchQueue.main.async {
+            self.setupRx()
+        }
+
         self.presenter.start()
     }
 
@@ -37,6 +45,8 @@ final class RecipesListView: UIViewController, ViewInterface {
         view.backgroundColor = .white
 
         view.addSubview(searchBar)
+        view.addSubview(tableView)
+
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.width.equalToSuperview()
@@ -44,7 +54,6 @@ final class RecipesListView: UIViewController, ViewInterface {
             make.height.equalTo(44)
         }
 
-        view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom).offset(4)
             make.width.equalToSuperview()
@@ -64,14 +73,15 @@ final class RecipesListView: UIViewController, ViewInterface {
             }).disposed(by: disposeBag)
 
         recipes
-            .observeOn(MainScheduler.instance)
-            .bind(to: tableView.rx.items(cellIdentifier: "RecipeCell")) { (_, recipe: ModelRecipe, cell: RecipeCell) in
+            .flatMap { Observable.from(optional: $0) } //unwrap
+            .distinctUntilChanged()
+            .bind(to: self.tableView.rx.items(cellIdentifier: "RecipeCell")) { (_, recipe: ModelRecipe, cell: RecipeCell) in
                 cell.setTitle(recipe.title)
                 cell.setIngredients(recipe.ingredients)
                 cell.setHasLactose(recipe.hasLactose)
                 cell.setImage(recipe.image)
                 cell.setFavorited(recipe.favorited)
-        }.disposed(by: disposeBag)
+        }.disposed(by: self.disposeBag)
 
         tableView.rx.contentOffset
             .asDriver()
@@ -93,7 +103,6 @@ final class RecipesListView: UIViewController, ViewInterface {
             .drive(onNext: { [weak self] item in
                 self?.presenter.openDetail(recipe: item)
             }).disposed(by: disposeBag)
-
     }
 }
 

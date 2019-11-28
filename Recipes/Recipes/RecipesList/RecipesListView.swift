@@ -112,7 +112,7 @@ extension RecipesListView: RecipesListViewPresenterInterface {
     }
     
     func showError() {
-
+        // TODO
     }
 }
 

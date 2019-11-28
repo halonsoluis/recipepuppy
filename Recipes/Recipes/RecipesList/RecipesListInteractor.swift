@@ -16,14 +16,11 @@ final class RecipesListInteractor: InteractorInterface {
     private var recipes: [ModelRecipe] = []
     private var ingredients: String = ""
 
-    private var fetching: Bool = false
+    private let api: APIServiceInterface
 
-    private let session: URLSession
-
-    init(session: URLSession = URLSession.shared) {
-        self.session = session
+    init(api: APIServiceInterface = ServiceFactory().api) {
+        self.api = api
     }
-
 }
 
 extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
@@ -41,74 +38,31 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
         let newIngredientsList = curatedIngredients(ingredients)
 
         guard self.ingredients != newIngredientsList else { return false }
-
         self.ingredients = newIngredientsList
-        lastPageLoaded = 0
-        recipes = []
+
+        prepareForNewSearch()
 
         return true
     }
 
-    func fetchRecipes() {
-        guard !fetching else { return }
-        fetching = true
-        
-        lastPageLoaded = lastPageLoaded + 1
-        print("Fetching page \(lastPageLoaded) for ingredients: \(ingredients)")
-
-        var components = URLComponents()
-        components.scheme = "http"
-        components.host = "recipepuppy.com"
-        components.path = "/api"
-        components.queryItems = [
-            URLQueryItem(name: "i", value: ingredients),
-            //URLQueryItem(name: "q", value: name),
-            URLQueryItem(name: "p", value: lastPageLoaded.description)
-        ]
-
-        guard let url = components.url else { return }
-
-        let request = NSMutableURLRequest(
-            url: url,
-            cachePolicy: .returnCacheDataElseLoad,
-            timeoutInterval: 10.0
-        )
-        request.httpMethod = "GET"
-
-        let dataTask = session
-            .dataTask(with: request as URLRequest, completionHandler: { [weak self] (data, response, error) -> Void in
-
-                if (error != nil) {
-                    self?.presenter.recipeFetchFailed()
-                } else {
-                    guard let httpResponse = response as? HTTPURLResponse,
-                        httpResponse.statusCode == 200,
-                        let data = data,
-                        let jsonString = String(data: data, encoding: .utf8),
-                        let jsonData = jsonString.data(using: .utf8)
-                        else {
-                            print("---    Fetching attempt has failed")
-                            self?.fetching = false
-                            return
-                    }
-
-                    guard let response = try? JSONDecoder().decode(RecipeEnvelope.self, from: jsonData) else { return }
-
-                    guard let strongSelf = self else { return }
-
-                    let newRecipes = strongSelf.prepareData(newRecipes: response.results)
-
-                    strongSelf.recipes.append(contentsOf: newRecipes)
-                    strongSelf.presenter.recipeFetchedSuccess(recipes: strongSelf.recipes)
-                }
-
-                self?.fetching = false
-            })
-
-        dataTask.resume()
+    private func prepareForNewSearch() {
+        lastPageLoaded = 0
+        recipes = []
     }
 
-    func prepareData(newRecipes: [ModelRecipe]) -> [ModelRecipe] {
+    private func handleResponse(newRecipes: [ModelRecipe]?) {
+        if let newRecipes = newRecipes {
+            lastPageLoaded = lastPageLoaded + 1
+            print("Fetched page \(lastPageLoaded) for ingredients: \(ingredients)")
+
+            recipes.append(contentsOf: prepareData(newRecipes))
+            presenter.recipeFetchedSuccess(recipes: recipes)
+        } else {
+            presenter.recipeFetchFailed()
+        }
+    }
+
+    private func prepareData(_ newRecipes: [ModelRecipe]) -> [ModelRecipe] {
         return newRecipes
             .filter { !recipes.contains($0) }
             .map {
@@ -119,4 +73,7 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
         }
     }
 
+    func fetchRecipes() {
+        api.fetchRecipes(ingredients: ingredients, page: (lastPageLoaded + 1).description, completionHandler: handleResponse)
+    }
 }

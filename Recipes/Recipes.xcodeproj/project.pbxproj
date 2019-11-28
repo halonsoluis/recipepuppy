@@ -15,6 +15,8 @@
 		5B75E7BC23906A4600F4F4D3 /* APIServiceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7BB23906A4600F4F4D3 /* APIServiceInterface.swift */; };
 		5B75E7C023906BAE00F4F4D3 /* RecipeAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7BF23906BAE00F4F4D3 /* RecipeAPIService.swift */; };
 		5B75E7C22390723B00F4F4D3 /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7C12390723B00F4F4D3 /* ServiceFactory.swift */; };
+		5B75E7C6239084AC00F4F4D3 /* PersitanceServiceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7C5239084AC00F4F4D3 /* PersitanceServiceInterface.swift */; };
+		5B75E7C82390868700F4F4D3 /* LocalPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7C72390868700F4F4D3 /* LocalPersistenceService.swift */; };
 		5BEE4E03238B2C8200C379A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E02238B2C8200C379A8 /* AppDelegate.swift */; };
 		5BEE4E05238B2C8200C379A8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E04238B2C8200C379A8 /* SceneDelegate.swift */; };
 		5BEE4E0D238B2C8200C379A8 /* Recipes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E0B238B2C8200C379A8 /* Recipes.xcdatamodeld */; };
@@ -62,6 +64,8 @@
 		5B75E7BB23906A4600F4F4D3 /* APIServiceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceInterface.swift; sourceTree = "<group>"; };
 		5B75E7BF23906BAE00F4F4D3 /* RecipeAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAPIService.swift; sourceTree = "<group>"; };
 		5B75E7C12390723B00F4F4D3 /* ServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFactory.swift; sourceTree = "<group>"; };
+		5B75E7C5239084AC00F4F4D3 /* PersitanceServiceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersitanceServiceInterface.swift; sourceTree = "<group>"; };
+		5B75E7C72390868700F4F4D3 /* LocalPersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPersistenceService.swift; sourceTree = "<group>"; };
 		5BEE4DFF238B2C8200C379A8 /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BEE4E02238B2C8200C379A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5BEE4E04238B2C8200C379A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -133,6 +137,7 @@
 		5B75E7B7239069AC00F4F4D3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				5B75E7C42390847700F4F4D3 /* Persistance */,
 				5B75E7C323907FDD00F4F4D3 /* Catalog */,
 				5B75E7BE23906B9E00F4F4D3 /* API */,
 			);
@@ -155,6 +160,15 @@
 				5B75E7C12390723B00F4F4D3 /* ServiceFactory.swift */,
 			);
 			path = Catalog;
+			sourceTree = "<group>";
+		};
+		5B75E7C42390847700F4F4D3 /* Persistance */ = {
+			isa = PBXGroup;
+			children = (
+				5B75E7C5239084AC00F4F4D3 /* PersitanceServiceInterface.swift */,
+				5B75E7C72390868700F4F4D3 /* LocalPersistenceService.swift */,
+			);
+			path = Persistance;
 			sourceTree = "<group>";
 		};
 		5BAF92D0238C6BFC0069567C /* Application */ = {
@@ -403,12 +417,14 @@
 				5B75E7C023906BAE00F4F4D3 /* RecipeAPIService.swift in Sources */,
 				5B2B8933238C86BE00597658 /* RecipeEnvelope.swift in Sources */,
 				5B2B8938238CBCB800597658 /* RecipeCell.swift in Sources */,
+				5B75E7C6239084AC00F4F4D3 /* PersitanceServiceInterface.swift in Sources */,
 				5BEE4E57238B4C3F00C379A8 /* RecipesListInteractor.swift in Sources */,
 				5B2B893A238CDE2A00597658 /* DetailWebPage.swift in Sources */,
 				5BEE4E53238B4C3F00C379A8 /* RecipesListModule.swift in Sources */,
 				5B75E7C22390723B00F4F4D3 /* ServiceFactory.swift in Sources */,
 				5BEE4E55238B4C3F00C379A8 /* RecipesListRouter.swift in Sources */,
 				5BEE4E03238B2C8200C379A8 /* AppDelegate.swift in Sources */,
+				5B75E7C82390868700F4F4D3 /* LocalPersistenceService.swift in Sources */,
 				5B75E7BC23906A4600F4F4D3 /* APIServiceInterface.swift in Sources */,
 				5BEE4E54238B4C3F00C379A8 /* RecipesListView.swift in Sources */,
 				5BEE4E05238B2C8200C379A8 /* SceneDelegate.swift in Sources */,

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RxSwift
 
 typealias APIResponse = ([ModelRecipe]?) -> Void
 protocol APIServiceInterface {

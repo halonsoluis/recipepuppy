@@ -11,7 +11,8 @@ import UIKit
 // MARK: - router
 
 protocol RecipesListRouterPresenterInterface: RouterPresenterInterface {
-    func pushToDetailScreen(recipe: ModelRecipe)
+    func pushToDetailScreen(using url: URL, title: String)
+    func pushToDetailScreen(data: Data, baseURL: URL, title: String)
 }
 
 // MARK: - presenter
@@ -24,6 +25,8 @@ protocol RecipesListPresenterInteractorInterface: PresenterInteractorInterface {
     func recipeFetchedSuccess(recipes:Array<ModelRecipe>)
     func recipeFetchFailed(error: Error)
     func presentingFavoritesList(_ favorites: Bool)
+    func openDetailsFrom(data: Data, baseURL: URL, title: String)
+    func openDetailsFrom(url: URL, title: String)
 }
 
 protocol RecipesListPresenterViewInterface: PresenterViewInterface {
@@ -42,6 +45,7 @@ protocol RecipesListInteractorPresenterInterface: InteractorPresenterInterface {
     func searchByIngredients(_ ingredients: String) -> Bool
     func toggleFavorite(recipe: ModelRecipe)
     func toggleFavoritesList()
+    func openDetails(for recipe: ModelRecipe)
 }
 
 // MARK: - view

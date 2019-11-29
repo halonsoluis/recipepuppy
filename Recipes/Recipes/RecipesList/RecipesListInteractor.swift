@@ -49,6 +49,18 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
         return presentingFavoriteList ? favorites : recipes
     }
 
+    func openDetails(for recipe: ModelRecipe) {
+        guard let url = URL(string: recipe.href) else { return }
+
+        // This will always return the saved version of the recipe page at the moment that it was saved
+        if recipe.favorited, let data = recipe.webContent {
+            presenter.openDetailsFrom(data: data, baseURL: url, title: recipe.title)
+            return
+        }
+
+        presenter.openDetailsFrom(url: url, title: recipe.title)
+    }
+
     func toggleFavorite(recipe: ModelRecipe) {
         guard recipe.favorited ? persistence.remove(recipe: recipe) : persistence.save(recipe: recipe) else { return }
 
@@ -115,10 +127,13 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
             .map { ModelRecipe(data: $0) }
             .filter { !recipes.contains($0) }
             .map {
+                if let indexInFavorites = favorites.firstIndex(of: $0) {
+                    return favorites[indexInFavorites]
+                }
+
                 var recipe = $0
                 recipe.title = recipe.title.trimmingCharacters(in: .whitespacesAndNewlines)
                 recipe.ingredients = recipe.ingredients.trimmingCharacters(in: .whitespacesAndNewlines)
-                recipe.favorited = favorites.contains($0)
                 return recipe
         }
     }

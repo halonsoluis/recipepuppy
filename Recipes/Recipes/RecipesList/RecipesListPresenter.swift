@@ -32,6 +32,14 @@ extension RecipesListPresenter: RecipesListPresenterInteractorInterface {
         //not handled, as at some cases, the API is just unreliable
         //TODO: Point to Improve
     }
+
+    func openDetailsFrom(url: URL, title: String) {
+        router.pushToDetailScreen(using: url, title: title)
+    }
+
+    func openDetailsFrom(data: Data, baseURL: URL, title: String) {
+        router.pushToDetailScreen(data: data, baseURL: baseURL, title: title)
+    }
 }
 
 extension RecipesListPresenter: RecipesListPresenterViewInterface {
@@ -51,7 +59,7 @@ extension RecipesListPresenter: RecipesListPresenterViewInterface {
     }
 
     func openDetail(recipe: ModelRecipe) {
-        router.pushToDetailScreen(recipe: recipe)
+        interactor.openDetails(for: recipe)
     }
 
     func ingredientsChanged(_ ingredients: String) {

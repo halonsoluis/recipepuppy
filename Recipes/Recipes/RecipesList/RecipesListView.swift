@@ -19,7 +19,7 @@ final class RecipesListView: UIViewController, ViewInterface {
     private lazy var searchBar: UISearchBar = createSearchBar()
     private lazy var tableView: UITableView = createTableView()
 
-    private var recipes = BehaviorRelay<[ModelRecipe]?>(value: nil)
+    private var recipes = BehaviorRelay<[ModelRecipe]>(value: [])
 
     private var disposeBag: DisposeBag = DisposeBag()
 
@@ -73,8 +73,6 @@ final class RecipesListView: UIViewController, ViewInterface {
             }).disposed(by: disposeBag)
 
         recipes
-            .distinctUntilChanged()
-            .flatMap { Observable.from(optional: $0) } //unwrap
             .bind(to: self.tableView.rx.items(cellIdentifier: "RecipeCell")) { [weak self] (_, recipe: ModelRecipe, cell: RecipeCell) in
                 self?.prepareCell(recipe: recipe, cell: cell)
         }.disposed(by: self.disposeBag)

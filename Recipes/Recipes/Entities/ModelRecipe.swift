@@ -38,7 +38,6 @@ extension ModelRecipe {
 extension ModelRecipe: Equatable, Hashable {
     static func ==(lhs: ModelRecipe, rhs: ModelRecipe) -> Bool {
         return lhs.href == rhs.href
-        && lhs.favorited == rhs.favorited
     }
 
     func hash(into hasher: inout Hasher) {

@@ -18,6 +18,7 @@ final class RecipesListView: UIViewController, ViewInterface {
 
     private lazy var searchBar: UISearchBar = createSearchBar()
     private lazy var tableView: UITableView = createTableView()
+    private lazy var favoritesButton: UIBarButtonItem = createFavoritesButton()
 
     private var recipes = BehaviorRelay<[ModelRecipe]>(value: [])
 
@@ -60,6 +61,8 @@ final class RecipesListView: UIViewController, ViewInterface {
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+
+        navigationItem.rightBarButtonItem = favoritesButton
     }
 
     private func setupRx() {
@@ -146,5 +149,27 @@ extension RecipesListView {
         tableView.register(RecipeCell.self, forCellReuseIdentifier: "RecipeCell")
 
         return tableView
+    }
+
+    private func favoritesIconImage(favorites: Bool) -> UIImage? {
+        let imageName = favorites ? "heart.fill" : "heart"
+        let formFactor = UIImage.SymbolConfiguration(weight: .light)
+        let image = UIImage(systemName: imageName, withConfiguration: formFactor)
+        return image
+    }
+
+    private func createFavoritesButton() -> UIBarButtonItem {
+        let button = UIBarButtonItem(
+            image: favoritesIconImage(favorites: false),
+            style: .plain,
+            target: self,
+            action: #selector(toggleFavoritesList)
+        )
+        button.accessibilityIdentifier = "favorites_list_button"
+        return button
+    }
+
+    @objc private func toggleFavoritesList() {
+        self.presenter.toggleFavoritesList()
     }
 }

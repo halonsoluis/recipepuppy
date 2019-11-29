@@ -52,6 +52,7 @@ extension RecipesListPresenter: RecipesListPresenterViewInterface {
     }
 
     func start() {
+        interactor.loadInitialData()
     }
 
     func fetchMore() {

@@ -26,10 +26,8 @@ final class RecipesListInteractor: InteractorInterface {
          persistence: PersitenceServiceInterface = ServiceFactory().persistence) {
         self.api = api
         self.persistence = persistence
-
-        loadFavorites()
     }
-
+    
     private func loadFavorites(completionHandler: (()->Void)? = nil) {
         DispatchQueue.main.async {
             self.favorites = self.persistence.loadAll()
@@ -39,6 +37,11 @@ final class RecipesListInteractor: InteractorInterface {
 }
 
 extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
+
+    func loadInitialData() {
+        loadFavorites()
+    }
+
     func toggleFavoritesList() {
         presentingFavoriteList = !presentingFavoriteList
         presenter.recipeFetchedSuccess(recipes: selectedList())

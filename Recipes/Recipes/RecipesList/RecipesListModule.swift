@@ -23,6 +23,7 @@ protocol RecipesListPresenterRouterInterface: PresenterRouterInterface {
 protocol RecipesListPresenterInteractorInterface: PresenterInteractorInterface {
     func recipeFetchedSuccess(recipes:Array<ModelRecipe>)
     func recipeFetchFailed(error: Error)
+    func presentingFavoritesList(_ favorites: Bool)
 }
 
 protocol RecipesListPresenterViewInterface: PresenterViewInterface {
@@ -31,6 +32,7 @@ protocol RecipesListPresenterViewInterface: PresenterViewInterface {
     func openDetail(recipe: ModelRecipe)
     func ingredientsChanged(_ ingredients: String)
     func toggleFavorite(recipe: ModelRecipe)
+    func toggleFavoritesList()
 }
 
 // MARK: - interactor
@@ -39,6 +41,7 @@ protocol RecipesListInteractorPresenterInterface: InteractorPresenterInterface {
     func fetchRecipes()
     func searchByIngredients(_ ingredients: String) -> Bool
     func toggleFavorite(recipe: ModelRecipe)
+    func toggleFavoritesList()
 }
 
 // MARK: - view
@@ -46,6 +49,7 @@ protocol RecipesListInteractorPresenterInterface: InteractorPresenterInterface {
 protocol RecipesListViewPresenterInterface: ViewPresenterInterface {
     func showRecipes(recipes:Array<ModelRecipe>)
     func showError()
+    func presentingFavoritesList(_ favorites: Bool)
 }
 
 

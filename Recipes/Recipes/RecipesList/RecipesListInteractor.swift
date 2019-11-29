@@ -19,6 +19,7 @@ final class RecipesListInteractor: InteractorInterface {
     private let api: APIServiceInterface
     private let persistence: PersitenceServiceInterface
 
+    private var presentingFavoriteList: Bool = false
     private var favorites: [ModelRecipe] = []
 
     init(api: APIServiceInterface = ServiceFactory().api,
@@ -29,25 +30,35 @@ final class RecipesListInteractor: InteractorInterface {
         loadFavorites()
     }
 
-    private func loadFavorites() {
+    private func loadFavorites(completionHandler: (()->Void)? = nil) {
         DispatchQueue.main.async {
             self.favorites = self.persistence.loadAll()
+            completionHandler?()
         }
     }
 }
 
 extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
+    func toggleFavoritesList() {
+        presentingFavoriteList = !presentingFavoriteList
+        presenter.recipeFetchedSuccess(recipes: selectedList())
+    }
+
+    private func selectedList() -> [ModelRecipe] {
+        presenter.presentingFavoritesList(presentingFavoriteList)
+        return presentingFavoriteList ? favorites : recipes
+    }
 
     func toggleFavorite(recipe: ModelRecipe) {
-        if let index = recipes.lastIndex(where: { $0.href == recipe.href }) {
-            let favorited = !recipes[index].favorited
-            let success = favorited ? persistence.save(recipe: recipe) : persistence.remove(recipe: recipe)
+        guard recipe.favorited ? persistence.remove(recipe: recipe) : persistence.save(recipe: recipe) else { return }
 
-            if success {
-                recipes[index].favorited = favorited
-                loadFavorites()
-                presenter.recipeFetchedSuccess(recipes: recipes)
-            }
+        if let index = recipes.firstIndex(of: recipe) {
+            recipes[index].favorited = !recipe.favorited
+        }
+
+        loadFavorites() { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.presenter.recipeFetchedSuccess(recipes: strongSelf.selectedList())
         }
     }
 
@@ -89,8 +100,9 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
             //If we are offline, load data since the beginning
             if (error as NSError).code == -1009 {
                 if recipes.isEmpty {
+
                     DispatchQueue.main.async {
-                        self.presenter.recipeFetchedSuccess(recipes: self.favorites)
+                        self.toggleFavoritesList()
                     }
                 }
             }
@@ -112,6 +124,10 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
     }
 
     func fetchRecipes() {
+        guard !presentingFavoriteList else {
+            //Block fetching when displaying only favorites
+            return
+        }
         api.fetchRecipes(ingredients: ingredients, page: (lastPageLoaded + 1).description, completionHandler: handleResponse)
     }
 }

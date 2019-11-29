@@ -46,6 +46,7 @@ final class LocalPersistenceService: PersitenceServiceInterface {
         do {
             if let result = try context.fetch(request).first as? Recipe {
                 context.delete(result)
+                try context.save()
                 return true
             }
         } catch {

@@ -29,8 +29,9 @@ final class RecipesListInteractor: InteractorInterface {
     }
     
     private func loadFavorites(completionHandler: (()->Void)? = nil) {
-        DispatchQueue.main.async {
-            self.favorites = self.persistence.loadAll()
+
+        self.persistence.loadAll() { [weak self] in
+            self?.favorites = $0
             completionHandler?()
         }
     }
@@ -65,8 +66,20 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
     }
 
     func toggleFavorite(recipe: ModelRecipe) {
-        guard recipe.favorited ? persistence.remove(recipe: recipe) : persistence.save(recipe: recipe) else { return }
+        let refreshDataClosure: (Bool)->Void = { [weak self] in
+            if $0 {
+                self?.refreshData(recipe: recipe)
+            }
+        }
 
+        if recipe.favorited {
+            persistence.remove(recipe: recipe, completionHandler: refreshDataClosure)
+        } else {
+            persistence.save(recipe: recipe, completionHandler: refreshDataClosure)
+        }
+    }
+
+    private func refreshData(recipe: ModelRecipe) {
         if let index = recipes.firstIndex(of: recipe) {
             recipes[index].favorited = !recipe.favorited
         }

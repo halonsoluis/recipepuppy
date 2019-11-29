@@ -29,7 +29,6 @@
 		5BEE4E3D238B436500C379A8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5BEE4E3C238B436500C379A8 /* Kingfisher */; };
 		5BEE4E42238B43BC00C379A8 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5BEE4E41238B43BC00C379A8 /* RxSwift */; };
 		5BEE4E44238B43BC00C379A8 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 5BEE4E43238B43BC00C379A8 /* RxCocoa */; };
-		5BEE4E4A238B454900C379A8 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5BEE4E49238B454900C379A8 /* RealmSwift */; };
 		5BEE4E53238B4C3F00C379A8 /* RecipesListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E4E238B4C3F00C379A8 /* RecipesListModule.swift */; };
 		5BEE4E54238B4C3F00C379A8 /* RecipesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E4F238B4C3F00C379A8 /* RecipesListView.swift */; };
 		5BEE4E55238B4C3F00C379A8 /* RecipesListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E50238B4C3F00C379A8 /* RecipesListRouter.swift */; };
@@ -93,7 +92,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BEE4E4A238B454900C379A8 /* RealmSwift in Frameworks */,
 				5BEE4E3D238B436500C379A8 /* Kingfisher in Frameworks */,
 				5BEE4E5A238C5E5000C379A8 /* SnapKit in Frameworks */,
 				5BEE4E44238B43BC00C379A8 /* RxCocoa in Frameworks */,
@@ -280,7 +278,6 @@
 				5BEE4E3C238B436500C379A8 /* Kingfisher */,
 				5BEE4E41238B43BC00C379A8 /* RxSwift */,
 				5BEE4E43238B43BC00C379A8 /* RxCocoa */,
-				5BEE4E49238B454900C379A8 /* RealmSwift */,
 				5BEE4E59238C5E5000C379A8 /* SnapKit */,
 			);
 			productName = Recipes;
@@ -362,7 +359,6 @@
 				5BEE4E38238B412600C379A8 /* XCRemoteSwiftPackageReference "VIPER" */,
 				5BEE4E3B238B436500C379A8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				5BEE4E40238B43BC00C379A8 /* XCRemoteSwiftPackageReference "RxSwift" */,
-				5BEE4E48238B454900C379A8 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 				5BEE4E58238C5E5000C379A8 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				5BEE4E5B238C5E8600C379A8 /* XCRemoteSwiftPackageReference "Quick" */,
 			);
@@ -769,14 +765,6 @@
 				minimumVersion = 5.0.1;
 			};
 		};
-		5BEE4E48238B454900C379A8 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-cocoa";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.1.1;
-			};
-		};
 		5BEE4E58238C5E5000C379A8 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -815,11 +803,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5BEE4E40238B43BC00C379A8 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
-		};
-		5BEE4E49238B454900C379A8 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5BEE4E48238B454900C379A8 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
-			productName = RealmSwift;
 		};
 		5BEE4E59238C5E5000C379A8 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

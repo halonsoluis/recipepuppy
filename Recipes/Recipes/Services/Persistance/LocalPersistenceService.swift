@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import UIKit
 
+/// This can be changed to use RealmSwift, wich is much more readable and easy to use.
 final class LocalPersistenceService: PersitenceServiceInterface {
     func save(recipe: ModelRecipe) -> Bool {
 

@@ -17,6 +17,7 @@ struct ModelRecipe: Codable {
 
     var favorited: Bool
     var webContent: Data?
+    var hasLactose: Bool = false
 
     init(data: RecipeData, favorited: Bool = false, webContent: Data? = nil) {
         title = data.title
@@ -25,14 +26,11 @@ struct ModelRecipe: Codable {
         thumbnail = data.thumbnail
         self.favorited = favorited
         self.webContent = webContent
+        self.hasLactose = ingredients.lowercased().contains("milk") || ingredients.lowercased().contains("cheese")
     }
 }
 
 extension ModelRecipe {
-    var hasLactose: Bool {
-       return ingredients.lowercased().contains("milk") || ingredients.lowercased().contains("cheese")
-    }
-
     var image: URL? {
         return URL(string: thumbnail)
     }

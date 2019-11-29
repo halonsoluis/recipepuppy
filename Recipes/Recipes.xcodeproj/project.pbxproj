@@ -121,9 +121,9 @@
 		5B2B892F238C72F800597658 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				5B75E7CB2390D23200F4F4D3 /* DTO */,
 				5B2B8930238C76AE00597658 /* RecipeData.swift */,
 				5B2B8932238C86BE00597658 /* RecipeEnvelope.swift */,
-				5B75E7C923908CF400F4F4D3 /* ModelRecipe.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -171,6 +171,14 @@
 				5BEE4E0B238B2C8200C379A8 /* Recipes.xcdatamodeld */,
 			);
 			path = Persistance;
+			sourceTree = "<group>";
+		};
+		5B75E7CB2390D23200F4F4D3 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				5B75E7C923908CF400F4F4D3 /* ModelRecipe.swift */,
+			);
+			path = DTO;
 			sourceTree = "<group>";
 		};
 		5BAF92D0238C6BFC0069567C /* Application */ = {

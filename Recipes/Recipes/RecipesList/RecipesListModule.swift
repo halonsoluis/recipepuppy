@@ -46,6 +46,7 @@ protocol RecipesListInteractorPresenterInterface: InteractorPresenterInterface {
     func toggleFavorite(recipe: ModelRecipe)
     func toggleFavoritesList()
     func openDetails(for recipe: ModelRecipe)
+    func loadInitialData()
 }
 
 // MARK: - view

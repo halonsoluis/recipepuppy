@@ -102,6 +102,7 @@ class RecipeCell: UITableViewCell {
 
         let text = favorited ? " Remove favorite" : "   Make favorite"
         makeFavorite.setTitle(text, for: .normal)
+        makeFavorite.isEnabled = true
     }
 
     func setHasLactose(_ hasLactose: Bool) {
@@ -189,6 +190,7 @@ extension RecipeCell {
     }
 
     @objc private func handleTapInFavoriteButton() {
+        makeFavorite.isEnabled = false
         toggleFavorite?()
     }
 }

@@ -37,6 +37,8 @@ final class RecipesListInteractor: InteractorInterface {
 }
 
 extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
+    func toggleFavoritesList() {
+    }
 
     func toggleFavorite(recipe: ModelRecipe) {
         if let index = recipes.lastIndex(where: { $0.href == recipe.href }) {

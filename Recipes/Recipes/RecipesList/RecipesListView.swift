@@ -120,6 +120,9 @@ extension RecipesListView: RecipesListViewPresenterInterface {
     func showError() {
         // TODO
     }
+
+    func presentingFavoritesList(_ favorites: Bool) {
+    }
 }
 
 // MARK: Initializers

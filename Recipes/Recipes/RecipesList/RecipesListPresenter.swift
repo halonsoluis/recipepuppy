@@ -20,6 +20,10 @@ extension RecipesListPresenter: RecipesListPresenterRouterInterface {
 }
 
 extension RecipesListPresenter: RecipesListPresenterInteractorInterface {
+    func presentingFavoritesList(_ favorites: Bool) {
+        view.presentingFavoritesList(favorites)
+    }
+
     func recipeFetchedSuccess(recipes: Array<ModelRecipe>) {
         view.showRecipes(recipes: recipes)
     }
@@ -31,6 +35,10 @@ extension RecipesListPresenter: RecipesListPresenterInteractorInterface {
 }
 
 extension RecipesListPresenter: RecipesListPresenterViewInterface {
+    func toggleFavoritesList() {
+        interactor.toggleFavoritesList()
+    }
+
     func toggleFavorite(recipe: ModelRecipe) {
         interactor.toggleFavorite(recipe: recipe)
     }

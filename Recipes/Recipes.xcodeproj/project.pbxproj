@@ -7,10 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B2B8931238C76AE00597658 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B8930238C76AE00597658 /* Recipe.swift */; };
+		5B2B8931238C76AE00597658 /* RecipeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B8930238C76AE00597658 /* RecipeData.swift */; };
 		5B2B8933238C86BE00597658 /* RecipeEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B8932238C86BE00597658 /* RecipeEnvelope.swift */; };
 		5B2B8938238CBCB800597658 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B8937238CBCB800597658 /* RecipeCell.swift */; };
 		5B2B893A238CDE2A00597658 /* DetailWebPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2B8939238CDE2A00597658 /* DetailWebPage.swift */; };
+		5B75E7B9239069BE00F4F4D3 /* ServicesCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7B8239069BE00F4F4D3 /* ServicesCatalog.swift */; };
+		5B75E7BC23906A4600F4F4D3 /* APIServiceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7BB23906A4600F4F4D3 /* APIServiceInterface.swift */; };
+		5B75E7C023906BAE00F4F4D3 /* RecipeAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7BF23906BAE00F4F4D3 /* RecipeAPIService.swift */; };
+		5B75E7C22390723B00F4F4D3 /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7C12390723B00F4F4D3 /* ServiceFactory.swift */; };
+		5B75E7C6239084AC00F4F4D3 /* PersitanceServiceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7C5239084AC00F4F4D3 /* PersitanceServiceInterface.swift */; };
+		5B75E7C82390868700F4F4D3 /* LocalPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7C72390868700F4F4D3 /* LocalPersistenceService.swift */; };
+		5B75E7CA23908CF400F4F4D3 /* ModelRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B75E7C923908CF400F4F4D3 /* ModelRecipe.swift */; };
 		5BEE4E03238B2C8200C379A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E02238B2C8200C379A8 /* AppDelegate.swift */; };
 		5BEE4E05238B2C8200C379A8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E04238B2C8200C379A8 /* SceneDelegate.swift */; };
 		5BEE4E0D238B2C8200C379A8 /* Recipes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E0B238B2C8200C379A8 /* Recipes.xcdatamodeld */; };
@@ -22,7 +29,6 @@
 		5BEE4E3D238B436500C379A8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5BEE4E3C238B436500C379A8 /* Kingfisher */; };
 		5BEE4E42238B43BC00C379A8 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5BEE4E41238B43BC00C379A8 /* RxSwift */; };
 		5BEE4E44238B43BC00C379A8 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 5BEE4E43238B43BC00C379A8 /* RxCocoa */; };
-		5BEE4E4A238B454900C379A8 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5BEE4E49238B454900C379A8 /* RealmSwift */; };
 		5BEE4E53238B4C3F00C379A8 /* RecipesListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E4E238B4C3F00C379A8 /* RecipesListModule.swift */; };
 		5BEE4E54238B4C3F00C379A8 /* RecipesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E4F238B4C3F00C379A8 /* RecipesListView.swift */; };
 		5BEE4E55238B4C3F00C379A8 /* RecipesListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE4E50238B4C3F00C379A8 /* RecipesListRouter.swift */; };
@@ -50,10 +56,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5B2B8930238C76AE00597658 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		5B2B8930238C76AE00597658 /* RecipeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeData.swift; sourceTree = "<group>"; };
 		5B2B8932238C86BE00597658 /* RecipeEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeEnvelope.swift; sourceTree = "<group>"; };
 		5B2B8937238CBCB800597658 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		5B2B8939238CDE2A00597658 /* DetailWebPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWebPage.swift; sourceTree = "<group>"; };
+		5B75E7B8239069BE00F4F4D3 /* ServicesCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesCatalog.swift; sourceTree = "<group>"; };
+		5B75E7BB23906A4600F4F4D3 /* APIServiceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceInterface.swift; sourceTree = "<group>"; };
+		5B75E7BF23906BAE00F4F4D3 /* RecipeAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAPIService.swift; sourceTree = "<group>"; };
+		5B75E7C12390723B00F4F4D3 /* ServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFactory.swift; sourceTree = "<group>"; };
+		5B75E7C5239084AC00F4F4D3 /* PersitanceServiceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersitanceServiceInterface.swift; sourceTree = "<group>"; };
+		5B75E7C72390868700F4F4D3 /* LocalPersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPersistenceService.swift; sourceTree = "<group>"; };
+		5B75E7C923908CF400F4F4D3 /* ModelRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRecipe.swift; sourceTree = "<group>"; };
 		5BEE4DFF238B2C8200C379A8 /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BEE4E02238B2C8200C379A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5BEE4E04238B2C8200C379A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,7 +92,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BEE4E4A238B454900C379A8 /* RealmSwift in Frameworks */,
 				5BEE4E3D238B436500C379A8 /* Kingfisher in Frameworks */,
 				5BEE4E5A238C5E5000C379A8 /* SnapKit in Frameworks */,
 				5BEE4E44238B43BC00C379A8 /* RxCocoa in Frameworks */,
@@ -109,8 +121,9 @@
 		5B2B892F238C72F800597658 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				5B2B8930238C76AE00597658 /* Recipe.swift */,
+				5B2B8930238C76AE00597658 /* RecipeData.swift */,
 				5B2B8932238C86BE00597658 /* RecipeEnvelope.swift */,
+				5B75E7C923908CF400F4F4D3 /* ModelRecipe.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -122,6 +135,44 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5B75E7B7239069AC00F4F4D3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5B75E7C42390847700F4F4D3 /* Persistance */,
+				5B75E7C323907FDD00F4F4D3 /* Catalog */,
+				5B75E7BE23906B9E00F4F4D3 /* API */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		5B75E7BE23906B9E00F4F4D3 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				5B75E7BB23906A4600F4F4D3 /* APIServiceInterface.swift */,
+				5B75E7BF23906BAE00F4F4D3 /* RecipeAPIService.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		5B75E7C323907FDD00F4F4D3 /* Catalog */ = {
+			isa = PBXGroup;
+			children = (
+				5B75E7B8239069BE00F4F4D3 /* ServicesCatalog.swift */,
+				5B75E7C12390723B00F4F4D3 /* ServiceFactory.swift */,
+			);
+			path = Catalog;
+			sourceTree = "<group>";
+		};
+		5B75E7C42390847700F4F4D3 /* Persistance */ = {
+			isa = PBXGroup;
+			children = (
+				5B75E7C5239084AC00F4F4D3 /* PersitanceServiceInterface.swift */,
+				5B75E7C72390868700F4F4D3 /* LocalPersistenceService.swift */,
+				5BEE4E0B238B2C8200C379A8 /* Recipes.xcdatamodeld */,
+			);
+			path = Persistance;
+			sourceTree = "<group>";
+		};
 		5BAF92D0238C6BFC0069567C /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,14 +181,6 @@
 				5BEE4E04238B2C8200C379A8 /* SceneDelegate.swift */,
 			);
 			path = Application;
-			sourceTree = "<group>";
-		};
-		5BAF92D1238C6C1E0069567C /* DB */ = {
-			isa = PBXGroup;
-			children = (
-				5BEE4E0B238B2C8200C379A8 /* Recipes.xcdatamodeld */,
-			);
-			path = DB;
 			sourceTree = "<group>";
 		};
 		5BEE4DF6238B2C8200C379A8 = {
@@ -164,9 +207,9 @@
 		5BEE4E01238B2C8200C379A8 /* Recipes */ = {
 			isa = PBXGroup;
 			children = (
+				5B75E7B7239069AC00F4F4D3 /* Services */,
 				5B2B892F238C72F800597658 /* Entities */,
 				5BEE4E13238B2C8200C379A8 /* Info.plist */,
-				5BAF92D1238C6C1E0069567C /* DB */,
 				5BAF92D0238C6BFC0069567C /* Application */,
 				5BEE4E4D238B4C3F00C379A8 /* RecipesList */,
 				5BEE4E37238B366D00C379A8 /* UI */,
@@ -235,7 +278,6 @@
 				5BEE4E3C238B436500C379A8 /* Kingfisher */,
 				5BEE4E41238B43BC00C379A8 /* RxSwift */,
 				5BEE4E43238B43BC00C379A8 /* RxCocoa */,
-				5BEE4E49238B454900C379A8 /* RealmSwift */,
 				5BEE4E59238C5E5000C379A8 /* SnapKit */,
 			);
 			productName = Recipes;
@@ -317,7 +359,6 @@
 				5BEE4E38238B412600C379A8 /* XCRemoteSwiftPackageReference "VIPER" */,
 				5BEE4E3B238B436500C379A8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				5BEE4E40238B43BC00C379A8 /* XCRemoteSwiftPackageReference "RxSwift" */,
-				5BEE4E48238B454900C379A8 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 				5BEE4E58238C5E5000C379A8 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				5BEE4E5B238C5E8600C379A8 /* XCRemoteSwiftPackageReference "Quick" */,
 			);
@@ -364,17 +405,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BEE4E56238B4C3F00C379A8 /* RecipesListPresenter.swift in Sources */,
+				5B75E7C023906BAE00F4F4D3 /* RecipeAPIService.swift in Sources */,
 				5B2B8933238C86BE00597658 /* RecipeEnvelope.swift in Sources */,
 				5B2B8938238CBCB800597658 /* RecipeCell.swift in Sources */,
+				5B75E7C6239084AC00F4F4D3 /* PersitanceServiceInterface.swift in Sources */,
 				5BEE4E57238B4C3F00C379A8 /* RecipesListInteractor.swift in Sources */,
 				5B2B893A238CDE2A00597658 /* DetailWebPage.swift in Sources */,
 				5BEE4E53238B4C3F00C379A8 /* RecipesListModule.swift in Sources */,
+				5B75E7C22390723B00F4F4D3 /* ServiceFactory.swift in Sources */,
 				5BEE4E55238B4C3F00C379A8 /* RecipesListRouter.swift in Sources */,
 				5BEE4E03238B2C8200C379A8 /* AppDelegate.swift in Sources */,
+				5B75E7C82390868700F4F4D3 /* LocalPersistenceService.swift in Sources */,
+				5B75E7BC23906A4600F4F4D3 /* APIServiceInterface.swift in Sources */,
 				5BEE4E54238B4C3F00C379A8 /* RecipesListView.swift in Sources */,
 				5BEE4E05238B2C8200C379A8 /* SceneDelegate.swift in Sources */,
+				5B75E7B9239069BE00F4F4D3 /* ServicesCatalog.swift in Sources */,
+				5B75E7CA23908CF400F4F4D3 /* ModelRecipe.swift in Sources */,
 				5BEE4E0D238B2C8200C379A8 /* Recipes.xcdatamodeld in Sources */,
-				5B2B8931238C76AE00597658 /* Recipe.swift in Sources */,
+				5B2B8931238C76AE00597658 /* RecipeData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,14 +765,6 @@
 				minimumVersion = 5.0.1;
 			};
 		};
-		5BEE4E48238B454900C379A8 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-cocoa";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.1.1;
-			};
-		};
 		5BEE4E58238C5E5000C379A8 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -763,11 +803,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5BEE4E40238B43BC00C379A8 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
-		};
-		5BEE4E49238B454900C379A8 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5BEE4E48238B454900C379A8 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
-			productName = RealmSwift;
 		};
 		5BEE4E59238C5E5000C379A8 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

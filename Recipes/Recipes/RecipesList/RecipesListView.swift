@@ -125,6 +125,19 @@ extension RecipesListView: RecipesListViewPresenterInterface {
     }
 
     func presentingFavoritesList(_ favorites: Bool) {
+        favoritesButton.setBackgroundImage(
+            favoritesIconImage(favorites: favorites),
+            for: .normal,
+            barMetrics: UIBarMetrics.default
+        )
+
+        searchBar.snp.updateConstraints { make in
+            make.height.equalTo(favorites ? 0 : 44)
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+
     }
 }
 
@@ -134,7 +147,8 @@ extension RecipesListView {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .prominent
         searchBar.placeholder = "Ingredients: onion, garlic"
-        
+        searchBar.autocapitalizationType = .none
+
         return searchBar
     }
 

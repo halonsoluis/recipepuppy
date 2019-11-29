@@ -20,20 +20,39 @@ extension RecipesListPresenter: RecipesListPresenterRouterInterface {
 }
 
 extension RecipesListPresenter: RecipesListPresenterInteractorInterface {
+    func presentingFavoritesList(_ favorites: Bool) {
+        view.presentingFavoritesList(favorites)
+    }
+
     func recipeFetchedSuccess(recipes: Array<ModelRecipe>) {
         view.showRecipes(recipes: recipes)
     }
 
-    func recipeFetchFailed() {
-
+    func recipeFetchFailed(error: Error) {
+        //not handled, as at some cases, the API is just unreliable
+        //TODO: Point to Improve
     }
 
+    func openDetailsFrom(url: URL, title: String) {
+        router.pushToDetailScreen(using: url, title: title)
+    }
 
+    func openDetailsFrom(data: Data, baseURL: URL, title: String) {
+        router.pushToDetailScreen(data: data, baseURL: baseURL, title: title)
+    }
 }
 
 extension RecipesListPresenter: RecipesListPresenterViewInterface {
+    func toggleFavoritesList() {
+        interactor.toggleFavoritesList()
+    }
+
+    func toggleFavorite(recipe: ModelRecipe) {
+        interactor.toggleFavorite(recipe: recipe)
+    }
 
     func start() {
+        interactor.loadInitialData()
     }
 
     func fetchMore() {
@@ -41,7 +60,7 @@ extension RecipesListPresenter: RecipesListPresenterViewInterface {
     }
 
     func openDetail(recipe: ModelRecipe) {
-        router.pushToDetailScreen(recipe: recipe)
+        interactor.openDetails(for: recipe)
     }
 
     func ingredientsChanged(_ ingredients: String) {

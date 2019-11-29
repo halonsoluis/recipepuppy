@@ -18,8 +18,9 @@ final class RecipesListView: UIViewController, ViewInterface {
 
     private lazy var searchBar: UISearchBar = createSearchBar()
     private lazy var tableView: UITableView = createTableView()
+    private lazy var favoritesButton: UIBarButtonItem = createFavoritesButton()
 
-    private var recipes = BehaviorRelay<[ModelRecipe]?>(value: nil)
+    private var recipes = BehaviorRelay<[ModelRecipe]>(value: [])
 
     private var disposeBag: DisposeBag = DisposeBag()
 
@@ -60,6 +61,8 @@ final class RecipesListView: UIViewController, ViewInterface {
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+
+        navigationItem.rightBarButtonItem = favoritesButton
     }
 
     private func setupRx() {
@@ -73,14 +76,8 @@ final class RecipesListView: UIViewController, ViewInterface {
             }).disposed(by: disposeBag)
 
         recipes
-            .flatMap { Observable.from(optional: $0) } //unwrap
-            .distinctUntilChanged()
-            .bind(to: self.tableView.rx.items(cellIdentifier: "RecipeCell")) { (_, recipe: ModelRecipe, cell: RecipeCell) in
-                cell.setTitle(recipe.title)
-                cell.setIngredients(recipe.ingredients)
-                cell.setHasLactose(recipe.hasLactose)
-                cell.setImage(recipe.image)
-                cell.setFavorited(recipe.favorited)
+            .bind(to: self.tableView.rx.items(cellIdentifier: "RecipeCell")) { [weak self] (_, recipe: ModelRecipe, cell: RecipeCell) in
+                self?.prepareCell(recipe: recipe, cell: cell)
         }.disposed(by: self.disposeBag)
 
         tableView.rx.contentOffset
@@ -104,6 +101,18 @@ final class RecipesListView: UIViewController, ViewInterface {
                 self?.presenter.openDetail(recipe: item)
             }).disposed(by: disposeBag)
     }
+
+    private func prepareCell(recipe: ModelRecipe, cell: RecipeCell) {
+        cell.setTitle(recipe.title)
+        cell.setIngredients(recipe.ingredients)
+        cell.setHasLactose(recipe.hasLactose)
+        cell.setImage(recipe.image)
+        cell.setFavorited(recipe.favorited)
+
+        cell.toggleFavorite = { [weak self] in
+            self?.presenter.toggleFavorite(recipe: recipe)
+        }
+    }
 }
 
 extension RecipesListView: RecipesListViewPresenterInterface {
@@ -112,6 +121,22 @@ extension RecipesListView: RecipesListViewPresenterInterface {
     }
     
     func showError() {
+        // TODO
+    }
+
+    func presentingFavoritesList(_ favorites: Bool) {
+        favoritesButton.setBackgroundImage(
+            favoritesIconImage(favorites: favorites),
+            for: .normal,
+            barMetrics: UIBarMetrics.default
+        )
+
+        searchBar.snp.updateConstraints { make in
+            make.height.equalTo(favorites ? 0 : 44)
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
 
     }
 }
@@ -122,7 +147,8 @@ extension RecipesListView {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .prominent
         searchBar.placeholder = "Ingredients: onion, garlic"
-        
+        searchBar.autocapitalizationType = .none
+
         return searchBar
     }
 
@@ -137,5 +163,27 @@ extension RecipesListView {
         tableView.register(RecipeCell.self, forCellReuseIdentifier: "RecipeCell")
 
         return tableView
+    }
+
+    private func favoritesIconImage(favorites: Bool) -> UIImage? {
+        let imageName = favorites ? "heart.fill" : "heart"
+        let formFactor = UIImage.SymbolConfiguration(weight: .light)
+        let image = UIImage(systemName: imageName, withConfiguration: formFactor)
+        return image
+    }
+
+    private func createFavoritesButton() -> UIBarButtonItem {
+        let button = UIBarButtonItem(
+            image: favoritesIconImage(favorites: false),
+            style: .plain,
+            target: self,
+            action: #selector(toggleFavoritesList)
+        )
+        button.accessibilityIdentifier = "favorites_list_button"
+        return button
+    }
+
+    @objc private func toggleFavoritesList() {
+        self.presenter.toggleFavoritesList()
     }
 }

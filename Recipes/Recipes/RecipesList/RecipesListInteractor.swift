@@ -16,17 +16,79 @@ final class RecipesListInteractor: InteractorInterface {
     private var recipes: [ModelRecipe] = []
     private var ingredients: String = ""
 
-    private var fetching: Bool = false
+    private let api: APIServiceInterface
+    private let persistence: PersitenceServiceInterface
 
-    private let session: URLSession
+    private var presentingFavoriteList: Bool = false
+    private var favorites: [ModelRecipe] = []
 
-    init(session: URLSession = URLSession.shared) {
-        self.session = session
+    init(api: APIServiceInterface = ServiceFactory().api,
+         persistence: PersitenceServiceInterface = ServiceFactory().persistence) {
+        self.api = api
+        self.persistence = persistence
     }
+    
+    private func loadFavorites(completionHandler: (()->Void)? = nil) {
 
+        self.persistence.loadAll() { [weak self] in
+            self?.favorites = $0
+            completionHandler?()
+        }
+    }
 }
 
 extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
+
+    func loadInitialData() {
+        loadFavorites()
+    }
+
+    func toggleFavoritesList() {
+        presentingFavoriteList = !presentingFavoriteList
+        presenter.recipeFetchedSuccess(recipes: selectedList())
+    }
+
+    private func selectedList() -> [ModelRecipe] {
+        presenter.presentingFavoritesList(presentingFavoriteList)
+        return presentingFavoriteList ? favorites : recipes
+    }
+
+    func openDetails(for recipe: ModelRecipe) {
+        guard let url = URL(string: recipe.href) else { return }
+
+        // This will always return the saved version of the recipe page at the moment that it was saved
+        if recipe.favorited, let data = recipe.webContent {
+            presenter.openDetailsFrom(data: data, baseURL: url, title: recipe.title)
+            return
+        }
+
+        presenter.openDetailsFrom(url: url, title: recipe.title)
+    }
+
+    func toggleFavorite(recipe: ModelRecipe) {
+        let refreshDataClosure: (Bool)->Void = { [weak self] in
+            if $0 {
+                self?.refreshData(recipe: recipe)
+            }
+        }
+
+        if recipe.favorited {
+            persistence.remove(recipe: recipe, completionHandler: refreshDataClosure)
+        } else {
+            persistence.save(recipe: recipe, completionHandler: refreshDataClosure)
+        }
+    }
+
+    private func refreshData(recipe: ModelRecipe) {
+        if let index = recipes.firstIndex(of: recipe) {
+            recipes[index].favorited = !recipe.favorited
+        }
+
+        loadFavorites() { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.presenter.recipeFetchedSuccess(recipes: strongSelf.selectedList())
+        }
+    }
 
     private func curatedIngredients(_ ingredients: String) -> String {
         var ingredientsWithoutSpaces = ingredients.replacingOccurrences(of: ", ", with: ",")
@@ -41,77 +103,50 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
         let newIngredientsList = curatedIngredients(ingredients)
 
         guard self.ingredients != newIngredientsList else { return false }
-
         self.ingredients = newIngredientsList
-        lastPageLoaded = 0
-        recipes = []
+
+        prepareForNewSearch()
 
         return true
     }
 
-    func fetchRecipes() {
-        guard !fetching else { return }
-        fetching = true
-        
-        lastPageLoaded = lastPageLoaded + 1
-        print("Fetching page \(lastPageLoaded) for ingredients: \(ingredients)")
-
-        var components = URLComponents()
-        components.scheme = "http"
-        components.host = "recipepuppy.com"
-        components.path = "/api"
-        components.queryItems = [
-            URLQueryItem(name: "i", value: ingredients),
-            //URLQueryItem(name: "q", value: name),
-            URLQueryItem(name: "p", value: lastPageLoaded.description)
-        ]
-
-        guard let url = components.url else { return }
-
-        let request = NSMutableURLRequest(
-            url: url,
-            cachePolicy: .returnCacheDataElseLoad,
-            timeoutInterval: 10.0
-        )
-        request.httpMethod = "GET"
-
-        let dataTask = session
-            .dataTask(with: request as URLRequest, completionHandler: { [weak self] (data, response, error) -> Void in
-
-                if (error != nil) {
-                    self?.presenter.recipeFetchFailed()
-                } else {
-                    guard let httpResponse = response as? HTTPURLResponse,
-                        httpResponse.statusCode == 200,
-                        let data = data,
-                        let jsonString = String(data: data, encoding: .utf8),
-                        let jsonData = jsonString.data(using: .utf8)
-                        else {
-                            print("---    Fetching attempt has failed")
-                            self?.fetching = false
-                            return
-                    }
-
-                    guard let response = try? JSONDecoder().decode(RecipeEnvelope.self, from: jsonData) else { return }
-
-                    guard let strongSelf = self else { return }
-
-                    let newRecipes = strongSelf.prepareData(newRecipes: response.results)
-
-                    strongSelf.recipes.append(contentsOf: newRecipes)
-                    strongSelf.presenter.recipeFetchedSuccess(recipes: strongSelf.recipes)
-                }
-
-                self?.fetching = false
-            })
-
-        dataTask.resume()
+    private func prepareForNewSearch() {
+        lastPageLoaded = 0
+        recipes = []
     }
 
-    func prepareData(newRecipes: [ModelRecipe]) -> [ModelRecipe] {
+    private func handleResponse(result: Result<[RecipeData], Error>) {
+
+        switch result {
+        case .success(let newRecipes):
+            lastPageLoaded = lastPageLoaded + 1
+            print("Fetched page \(lastPageLoaded) for ingredients: \(ingredients)")
+
+            recipes.append(contentsOf: prepareData(newRecipes))
+            presenter.recipeFetchedSuccess(recipes: recipes)
+        case .failure(let error):
+            //If we are offline, load data since the beginning
+            if (error as NSError).code == -1009 {
+                if recipes.isEmpty {
+
+                    DispatchQueue.main.async {
+                        self.toggleFavoritesList()
+                    }
+                }
+            }
+            presenter.recipeFetchFailed(error: error)
+        }
+    }
+
+    private func prepareData(_ newRecipes: [RecipeData]) -> [ModelRecipe] {
         return newRecipes
+            .map { ModelRecipe(data: $0) }
             .filter { !recipes.contains($0) }
             .map {
+                if let indexInFavorites = favorites.firstIndex(of: $0) {
+                    return favorites[indexInFavorites]
+                }
+
                 var recipe = $0
                 recipe.title = recipe.title.trimmingCharacters(in: .whitespacesAndNewlines)
                 recipe.ingredients = recipe.ingredients.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -119,4 +154,11 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
         }
     }
 
+    func fetchRecipes() {
+        guard !presentingFavoriteList else {
+            //Block fetching when displaying only favorites
+            return
+        }
+        api.fetchRecipes(ingredients: ingredients, page: (lastPageLoaded + 1).description, completionHandler: handleResponse)
+    }
 }

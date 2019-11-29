@@ -24,7 +24,7 @@ extension RecipesListPresenter: RecipesListPresenterInteractorInterface {
         view.showRecipes(recipes: recipes)
     }
 
-    func recipeFetchFailed() {
+    func recipeFetchFailed(error: Error) {
         //not handled, as at some cases, the API is just unreliable
         //TODO: Point to Improve
     }

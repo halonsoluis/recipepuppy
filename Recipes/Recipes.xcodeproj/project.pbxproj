@@ -170,6 +170,7 @@
 			children = (
 				5B75E7C5239084AC00F4F4D3 /* PersitanceServiceInterface.swift */,
 				5B75E7C72390868700F4F4D3 /* LocalPersistenceService.swift */,
+				5BEE4E0B238B2C8200C379A8 /* Recipes.xcdatamodeld */,
 			);
 			path = Persistance;
 			sourceTree = "<group>";
@@ -182,14 +183,6 @@
 				5BEE4E04238B2C8200C379A8 /* SceneDelegate.swift */,
 			);
 			path = Application;
-			sourceTree = "<group>";
-		};
-		5BAF92D1238C6C1E0069567C /* DB */ = {
-			isa = PBXGroup;
-			children = (
-				5BEE4E0B238B2C8200C379A8 /* Recipes.xcdatamodeld */,
-			);
-			path = DB;
 			sourceTree = "<group>";
 		};
 		5BEE4DF6238B2C8200C379A8 = {
@@ -219,7 +212,6 @@
 				5B75E7B7239069AC00F4F4D3 /* Services */,
 				5B2B892F238C72F800597658 /* Entities */,
 				5BEE4E13238B2C8200C379A8 /* Info.plist */,
-				5BAF92D1238C6C1E0069567C /* DB */,
 				5BAF92D0238C6BFC0069567C /* Application */,
 				5BEE4E4D238B4C3F00C379A8 /* RecipesList */,
 				5BEE4E37238B366D00C379A8 /* UI */,

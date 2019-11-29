@@ -9,7 +9,7 @@
 import Foundation
 
 protocol PersitenceServiceInterface {
-    func save(recipe: ModelRecipe)
-    func remove(recipe: ModelRecipe)
+    func save(recipe: ModelRecipe) -> Bool
+    func remove(recipe: ModelRecipe) -> Bool
     func loadAll() -> [ModelRecipe]
 }

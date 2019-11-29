@@ -56,8 +56,10 @@ extension RecipeAPIService: APIServiceInterface {
     }
 
     // TODO: Handle errors
-    func fetchRecipes(ingredients: String, page: String, completionHandler: @escaping ([RecipeData]?) -> Void) {
-        guard allowedToRequest(), let request = prepareRequest(ingredients, page) else { return  completionHandler(nil) }
+    func fetchRecipes(ingredients: String, page: String, completionHandler: @escaping APIResponse) {
+        guard allowedToRequest(), let request = prepareRequest(ingredients, page) else {
+            return
+        }
 
         let dataTask = session
             .dataTask(with: request, completionHandler: { [weak self] (data, response, error) -> Void in
@@ -66,9 +68,14 @@ extension RecipeAPIService: APIServiceInterface {
                     self?.fetching = false
                 }
 
-                guard error == nil, let httpResponse = response as? HTTPURLResponse else {
+                if let error = error {
+                    completionHandler(Result.failure(error))
+                    return
+                }
+
+                guard let httpResponse = response as? HTTPURLResponse else {
                     print("---    Fetching attempt for page \(page) has failed")
-                    completionHandler(nil)
+                    completionHandler(Result.failure(NSError()))
                     return
                 }
 
@@ -78,17 +85,17 @@ extension RecipeAPIService: APIServiceInterface {
                         let jsonString = String(data: data, encoding: .utf8),
                         let jsonData = jsonString.data(using: .utf8),
                         let response = try? JSONDecoder().decode(RecipeEnvelope.self, from: jsonData) {
-                        completionHandler(response.results)
+                        completionHandler(Result.success(response.results))
                     } else {
                         print("---    Parsing failed, page \(page) content ignored")
-                        completionHandler([])
+                        completionHandler(Result.success([]))
                     }
                 default:
                     // This can be related to the issues seen in the API and reproducible with
                     // http://www.recipepuppy.com/api/?i=onions,garlic&p=2
                     // so, a page that fails will be ignored (set as Empty) as following pages request may work
                     print("---    Fetching attempt for page \(page) has failed")
-                    completionHandler([])
+                    completionHandler(Result.success([]))
                 }
             })
         dataTask.resume()

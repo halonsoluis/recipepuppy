@@ -19,24 +19,36 @@ final class RecipesListInteractor: InteractorInterface {
     private let api: APIServiceInterface
     private let persistence: PersitenceServiceInterface
 
+    private var favorites: [ModelRecipe] = []
+
     init(api: APIServiceInterface = ServiceFactory().api,
          persistence: PersitenceServiceInterface = ServiceFactory().persistence) {
         self.api = api
         self.persistence = persistence
+
+        loadFavorites()
+    }
+
+    private func loadFavorites() {
+        DispatchQueue.main.async {
+            self.favorites = self.persistence.loadAll()
+        }
     }
 }
 
 extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
 
     func toggleFavorite(recipe: ModelRecipe) {
-        var favorited: Bool = false
         if let index = recipes.lastIndex(where: { $0.href == recipe.href }) {
-            recipes[index].favorited = !recipe.favorited
-            favorited = recipes[index].favorited
-        }
-        presenter.recipeFetchedSuccess(recipes: recipes)
+            let favorited = !recipes[index].favorited
+            let success = favorited ? persistence.save(recipe: recipe) : persistence.remove(recipe: recipe)
 
-        favorited ? persistence.save(recipe: recipe) : persistence.remove(recipe: recipe)
+            if success {
+                recipes[index].favorited = favorited
+                loadFavorites()
+                presenter.recipeFetchedSuccess(recipes: recipes)
+            }
+        }
     }
 
     private func curatedIngredients(_ ingredients: String) -> String {
@@ -64,15 +76,25 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
         recipes = []
     }
 
-    private func handleResponse(newRecipes: [RecipeData]?) {
-        if let newRecipes = newRecipes {
+    private func handleResponse(result: Result<[RecipeData], Error>) {
+
+        switch result {
+        case .success(let newRecipes):
             lastPageLoaded = lastPageLoaded + 1
             print("Fetched page \(lastPageLoaded) for ingredients: \(ingredients)")
 
             recipes.append(contentsOf: prepareData(newRecipes))
             presenter.recipeFetchedSuccess(recipes: recipes)
-        } else {
-            presenter.recipeFetchFailed()
+        case .failure(let error):
+            //If we are offline, load data since the beginning
+            if (error as NSError).code == -1009 {
+                if recipes.isEmpty {
+                    DispatchQueue.main.async {
+                        self.presenter.recipeFetchedSuccess(recipes: self.favorites)
+                    }
+                }
+            }
+            presenter.recipeFetchFailed(error: error)
         }
     }
 
@@ -84,6 +106,7 @@ extension RecipesListInteractor: RecipesListInteractorPresenterInterface {
                 var recipe = $0
                 recipe.title = recipe.title.trimmingCharacters(in: .whitespacesAndNewlines)
                 recipe.ingredients = recipe.ingredients.trimmingCharacters(in: .whitespacesAndNewlines)
+                recipe.favorited = favorites.contains($0)
                 return recipe
         }
     }

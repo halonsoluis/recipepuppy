@@ -22,7 +22,7 @@ protocol RecipesListPresenterRouterInterface: PresenterRouterInterface {
 
 protocol RecipesListPresenterInteractorInterface: PresenterInteractorInterface {
     func recipeFetchedSuccess(recipes:Array<ModelRecipe>)
-    func recipeFetchFailed()
+    func recipeFetchFailed(error: Error)
 }
 
 protocol RecipesListPresenterViewInterface: PresenterViewInterface {

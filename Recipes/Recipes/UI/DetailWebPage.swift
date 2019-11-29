@@ -28,11 +28,14 @@ final class DetailWebPage: UIViewController {
         }
     }
 
-    func loadDetails(for recipe: ModelRecipe) {
+    func loadDetails(for recipe: ModelRecipe, offline: Bool) {
         title = recipe.title
         if let url = URL(string: recipe.href) {
-            //webView.tale
-            webView.load(URLRequest(url: url))
+            if let data = recipe.webContent {
+                webView.load(data , mimeType: "text/html", characterEncodingName: "", baseURL: url)
+            } else {
+                webView.load(URLRequest(url: url))
+            }
         }
     }
 }

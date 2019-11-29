@@ -16,13 +16,15 @@ struct ModelRecipe: Codable {
     var thumbnail: String
 
     var favorited: Bool
+    var webContent: Data?
 
-    init(data: RecipeData, favorited: Bool = false) {
+    init(data: RecipeData, favorited: Bool = false, webContent: Data? = nil) {
         title = data.title
         href = data.href
         ingredients = data.ingredients
         thumbnail = data.thumbnail
         self.favorited = favorited
+        self.webContent = webContent
     }
 }
 

@@ -27,6 +27,10 @@ final class LocalPersistenceService: PersitenceServiceInterface {
         storedRecipe.setValue(recipe.thumbnail, forKey: "thumbnail")
         storedRecipe.setValue(recipe.title, forKey: "title")
 
+        if let url = URL(string: recipe.href) {
+            storedRecipe.setValue(try? Data(contentsOf: url), forKey: "webContent")
+        }
+
         do {
            try context.save()
             return true
@@ -82,7 +86,8 @@ final class LocalPersistenceService: PersitenceServiceInterface {
                         ingredients: $0.ingredients ?? "",
                         thumbnail: $0.thumbnail ?? ""
                     ),
-                    favorited: true
+                    favorited: true,
+                    webContent: $0.webContent
                 )
         }
     }

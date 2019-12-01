@@ -15,6 +15,7 @@
     - [Project architecture (**VIPER**)](#project-architecture-viper)
     - [UI (**Snapkit**)](#ui-snapkit)
     - [Networking](#networking)
+    - [Data Persistence](#data-persistence)
 
 ## The challenge
 
@@ -213,3 +214,54 @@ The `RecipesListInteractor` handles then:
   - This could have been moved into the **Networking Service** but it would have gotten complexer and the Single Responsability principle would had gone away. It would have required to remember there the last ingredients terms used.
 - Curate the ingredients string to pass to the network service, removing spaces, extra commas, etc.
   - The same as before applies. The interactor knows what it can find in that string, the `APIServiceInterface` should not be aware of that. With more time I would have changed the implementation in a way that the ingredients could have been passed one by one as part of a `[String]`, as this reduces a lot of the current problems in the usage of the API.
+
+### Data Persistence
+
+Since the very beginning I was thinking on using Realm for Data Persistence. But, where's the fun on it? Using CoreData is a good oportunity to showcase threading management and enjoy some nice headaches 🤕.
+
+As it was intended only to save favorites, the entity `Recipe` would save the data needed for reconstructing the full object and the contents of the saved webpage. Maybe it would have be better to naming it as `FavoritedRecipe`.
+
+The protocol defines some of the base use cases of a CRUD:
+
+```swift
+protocol PersitenceServiceInterface {
+    func save(recipe: ModelRecipe) -> Bool
+    func remove(recipe: ModelRecipe) -> Bool
+    func loadAll() -> [ModelRecipe]
+}
+```
+
+And includes, an extension for handling threading. That guarantees that all calls are made on the same thread, in an async way, with a high priority and that it returns with a completion handler executed in the Main Thread.
+
+>Maybe I could have moved this logic into an unique private `func`, working with generics and higher order functions. Something like:
+
+```swift
+extension PersitenceServiceInterface {
+    private var persistenceThread: DispatchQueue { DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated) }
+
+    func save(recipe: ModelRecipe, completionHandler: @escaping (Bool) -> Void) {
+        threadSafe(action: { self.save(recipe: recipe) }) { completionHandler($0) }
+    }
+
+    func remove(recipe: ModelRecipe, completionHandler: @escaping (Bool) -> Void) {
+        threadSafe(action: { self.remove(recipe: recipe) }) { completionHandler($0) }
+    }
+
+    func loadAll(completionHandler: @escaping ([ModelRecipe]) -> Void) {
+        threadSafe(action: { self.loadAll() }) { completionHandler($0) }
+    }
+
+    private func threadSafe<ResultType>(action: @escaping () -> ResultType, completionHandler: @escaping (ResultType) -> Void) {
+        persistenceThread.async {
+            let result = action()
+            DispatchQueue.main.async {
+                completionHandler(result)
+            }
+        }
+    }
+}
+```
+
+>But this is something I just got out of my head now, from here the importance of revisiting code and refactor when needed. This reduces the amounts of duplicated code and hence, the chances of commiting errors, and, of course, is suuuper *swifty* 🚀
+
+This service is injected via the constructor of the Interactor, as well as it's done and explained before with the API Service. So, no need to repeat myself in this matter.

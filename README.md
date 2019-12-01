@@ -11,6 +11,8 @@
 - [Development Story](#development-story)
   - [Initial API Analysis](#initial-api-analysis)
     - [Observations](#observations)
+  - [Documentation of the process](#documentation-of-the-process)
+    - [Project architecture (**VIPER**)](#project-architecture-viper)
 
 ## The challenge
 
@@ -119,3 +121,25 @@ Example Result
     - In some cases empty result sets are received for one page and for the next one, actual results are returned.
     - There's no documented way to know for the amount of pages available. The API just return:
     - It would be needed to try to fetch a couple of pages in advance before reporting as finished the list of recipes
+
+## Documentation of the process
+
+### Project architecture (**VIPER**) 
+
+   **Why choosing to use it even if it's not enforced?**
+
+| PROS                                                     | CONS                                                       
+| -------------------------------------------------------  | -----------------------------------------------------------------------------------| 
+| It's used by many of the recent companies in the field   | Extra Boilerplate.                                                                 |
+| It's seen as an improvement over MVVM.                   | It would take some research time to master.                                        |
+|It could solve some of the problems I'm facing with MVVM. | I may make several mistakes                                                        |
+| Personal opportunity to learn with a hands on strategy.  | Some degree of uncertainty regarding being able to finish in time the task in hand |
+
+  **The takeaways:**
+
+- I found [VIPERA](https://github.com/CoreKit/VIPERA) and [this blogpost](https://theswiftdev.com/2019/09/18/how-to-build-swiftui-apps-using-viper/) as the most valuable assets for getting into it. The structure can be a bit messy when you fill pressure to learn it fast and you find that there are many ways to do it.
+- It would have been easier to use MVVM as I have previous experience with it. But I would have lost the oportunity to learn something with a real goal/application in mind. At the end, from my experience, we really get to learn something **well** when we have an inmediate application for it.
+- Some degree of expertise is required to handle some of the cases. I found myself not using one of the interfaces. I'll need to dig into it and figure it out which was the intention of that one.
+- I must attempt to use other types of implementations of VIPER, using modules more intensively.
+- As soon as it's used for a couple of use cases, then it feels natural.
+- It makes a lot more clear how to make the code testable.

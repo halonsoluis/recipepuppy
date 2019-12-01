@@ -14,6 +14,7 @@
   - [Documentation of the process](#documentation-of-the-process)
     - [Project architecture (**VIPER**)](#project-architecture-viper)
     - [UI (**Snapkit**)](#ui-snapkit)
+    - [Networking](#networking)
 
 ## The challenge
 
@@ -159,3 +160,56 @@ But, while asking for the 3 page, it produces results:
 | The developer tends to think more about what it writes  | It takes more time |
 | Easier to review in a Pull Request (team work)  | The file containing the view gets bigger
 
+### Networking
+
+At the beginning, and as in many examples around the web, the Networking was placed inside the **Interactor**. This is not a good idea for big projects, or in general, it's good to have a facade over it to allow changes in the API and separation of concerns.
+
+For example, in this case, the API was not reliable enough, so, some considerations had to be made in order to remove that concern from the **Interactor** which intention is to obtain/process/prepare the data for the presenter.
+
+```swift
+typealias APIResponse = (Result<[RecipeData], Error>) -> Void
+protocol APIServiceInterface {
+    func fetchRecipes(ingredients: String, page: String, completionHandler: @escaping APIResponse)
+}
+```
+
+Adding responsabilities of the Network layer in the **Interactor** was smelling really bad 😷, a really *lightweight* **Services** approach was used instead. Injecting the needed dependencies in every case making the code as easily testable and single responsability as posible.
+
+Why *lightweight*? There are several examples of using Services in VIPER, going trough all the process of registering them in a **ServicesBuilder**, and it **sounds awesome**, but for only two services that I was planning to use in this constrained exercise, it was not worthed to add that complexity and to maintain those new classes and boilerplate needed.
+
+```swift
+protocol ServicesCatalog: class {
+    var api: APIServiceInterface { get }
+    var persistence: PersitenceServiceInterface { get }
+}
+```
+
+In a project aiming to production, I see it as the way to go, to make Services and to register them via a centralized Injection. Or Services Builder as called in some places.
+
+For this case, I used just a Factory for it, no rigid schemas of what a Service should include or extra added rules, those are better in other kind of projects.
+
+```swift
+final class ServiceFactory: ServicesCatalog {
+    var api: APIServiceInterface { RecipeAPIService(session: URLSession.shared) }
+    var persistence: PersitenceServiceInterface { LocalPersistenceService() }
+}
+```
+
+The networking service handles:
+
+- Avoids parallel request to the API
+  - Due to the way pagination had to be implemented.
+- Error handling
+  - Error ignoring for special error cases
+- Data Parsing into `RecipeData` removing `RecipeEnvelope` from the request results received.
+- Semi-stateless, it only remember if a fetch is ongoing.
+
+The `RecipesListInteractor` handles then:
+
+- Translates data into `ModelRecipe` to be used in the rest of the app
+- Reacts to errors
+- Keep track of received items for avoiding any possible duplicates
+- Remembers which page to request next.
+  - This could have been moved into the **Networking Service** but it would have gotten complexer and the Single Responsability principle would had gone away. It would have required to remember there the last ingredients terms used.
+- Curate the ingredients string to pass to the network service, removing spaces, extra commas, etc.
+  - The same as before applies. The interactor knows what it can find in that string, the `APIServiceInterface` should not be aware of that. With more time I would have changed the implementation in a way that the ingredients could have been passed one by one as part of a `[String]`, as this reduces a lot of the current problems in the usage of the API.

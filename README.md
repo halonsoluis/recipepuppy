@@ -13,6 +13,7 @@
     - [Observations](#observations)
   - [Documentation of the process](#documentation-of-the-process)
     - [Project architecture (**VIPER**)](#project-architecture-viper)
+    - [UI (**Snapkit**)](#ui-snapkit)
 
 ## The challenge
 
@@ -143,3 +144,16 @@ Example Result
 - I must attempt to use other types of implementations of VIPER, using modules more intensively.
 - As soon as it's used for a couple of use cases, then it feels natural.
 - It makes a lot more clear how to make the code testable.
+
+### UI (**Snapkit**) 
+
+   **Why choosing to use it over Storyboards?**
+
+| PROS                                                     | CONS                                                       
+| -------------------------------------------------------  | -----------------------------------------------------------------------------------| 
+| Less conflicts when merging code from several sources (team work)   | Need to add everything UI related manually                                                                 |
+| The intention is clear and readable at any moment                  | No visual editor
+| Finding an offensive Autolayout rule is easier | Needed to run the project to see the changes reflected and compare with desired result                                                      |
+| The developer tends to think more about what it writes  | It takes more time |
+| Easier to review in a Pull Request (team work)  | The file containing the view gets bigger
+

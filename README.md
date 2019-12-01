@@ -18,6 +18,7 @@
 ## The challenge
 
 This challenge should be done by using the free to use RecipePuppy API. We would like you to retrieve some recipes from there, display the recipes and perform certain operations on those recipes. Hereby the details:
+
 1. API connection, you should use their search endpoint and perform recipe searches with one or multiple ingredients (ie: http://www.recipepuppy.com/api/?i=onions,garlic&p=1) and parse the results. We would like you to use the networking tools iOS provides and not an external library.
 2. Use a searchbar as user input for the first point and show the results in a collection view with a layout like the following. Each recipe should show the image on top, the recipe name, ingredients (this one could have multiple lines so the layouts should support dynamic heights) and a label in a 45% angle that would show only if it contains lactose (to simplify consider that only milk and cheese contain lactose).
 
@@ -34,9 +35,9 @@ This challenge should be done by using the free to use RecipePuppy API. We would
 - [x] Use latest Swift code.
 - [x] Project architecture
   - [x] VIPER encouraged, but don’t enforced
-  - [x] Good project structure 
+  - [x] Good project structure
   - [x] Clear responsibilities of each component.
-- [x] Code quality: 
+- [x] Code quality:
   - [x] Appropriate data structures
   - [x] Typical programming patterns
   - [x] Good practices.
@@ -58,9 +59,9 @@ This challenge should be done by using the free to use RecipePuppy API. We would
   - [x] Use a good git flow
     - I'll mark it as done as it's something I can demostrate in other ways, but I forgot to start using it from the beginning.
 - [ ] Reason about your choices and defend your opinions and decisions
-    - [ ] Why have you used a certain data structure?
-    - [ ] Which alternatives did you consider?
-    - [ ] what would you improve if you had more time?
+  - [ ] Why have you used a certain data structure?
+  - [ ] Which alternatives did you consider?
+  - [ ] what would you improve if you had more time?
 
 # Development Story
 
@@ -81,6 +82,7 @@ Optional Parameters:
 **GET** http://www.recipepuppy.com/api/?i=onions,garlic&p=2
 
 Example Result
+
 ```json
 {
   "title": "Recipe Puppy",
@@ -101,27 +103,27 @@ Example Result
 
 - String content received needs to be trimmed. (`"Roasted Garlic Grilling Sauce\r\n\t\t\r\n\t\r\n\t\t\r\n\t\r\n\t\t\r\n\t\r\n\t\r\n\r\n"`)
 - Result
-  ```json
+
+```json
     {
        "title": String,
         "href": String,
         "ingredients": String,
         "thumbnail": String,
     }
-    ```
+```
 
 - The API is not stable, for some cases, for example, asking for the second page produces a **500** error and returns a **404 File Not Found** html
-    
-    **GET** http://www.recipepuppy.com/api/?i=onions,garlic&q=&p=2
+**GET** http://www.recipepuppy.com/api/?i=onions,garlic&q=&p=2
 
-    But, while asking for the 3 page, it produces results:
-        
-    **GET** http://www.recipepuppy.com/api/?i=onions,garlic&q=&p=101
+But, while asking for the 3 page, it produces results:
+
+ **GET** http://www.recipepuppy.com/api/?i=onions,garlic&q=&p=101
 
 - Pagination
-    - In some cases empty result sets are received for one page and for the next one, actual results are returned.
-    - There's no documented way to know for the amount of pages available. The API just return:
-    - It would be needed to try to fetch a couple of pages in advance before reporting as finished the list of recipes
+  - In some cases empty result sets are received for one page and for the next one, actual results are returned.
+  - There's no documented way to know for the amount of pages available. The API just return:
+  - It would be needed to try to fetch a couple of pages in advance before reporting as finished the list of recipes
 
 ## Documentation of the process
 
@@ -129,8 +131,8 @@ Example Result
 
    **Why choosing to use it even if it's not enforced?**
 
-| PROS                                                     | CONS                                                       
-| -------------------------------------------------------  | -----------------------------------------------------------------------------------| 
+| PROS                                                     | CONS
+| -------------------------------------------------------  | -----------------------------------------------------------------------------------|
 | It's used by many of the recent companies in the field   | Extra Boilerplate.                                                                 |
 | It's seen as an improvement over MVVM.                   | It would take some research time to master.                                        |
 |It could solve some of the problems I'm facing with MVVM. | I may make several mistakes                                                        |
@@ -145,11 +147,11 @@ Example Result
 - As soon as it's used for a couple of use cases, then it feels natural.
 - It makes a lot more clear how to make the code testable.
 
-### UI (**Snapkit**) 
+### UI (**Snapkit**)
 
    **Why choosing to use it over Storyboards?**
 
-| PROS                                                     | CONS                                                       
+| PROS                                                     | CONS                                                        |
 | -------------------------------------------------------  | -----------------------------------------------------------------------------------| 
 | Less conflicts when merging code from several sources (team work)   | Need to add everything UI related manually                                                                 |
 | The intention is clear and readable at any moment                  | No visual editor

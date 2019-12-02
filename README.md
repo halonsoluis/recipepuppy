@@ -16,6 +16,7 @@
     - [UI (**Snapkit**)](#ui-snapkit)
     - [Networking](#networking)
     - [Data Persistence](#data-persistence)
+  - [What would do better with more time?](#what-would-do-better-with-more-time)
 
 ## The challenge
 
@@ -52,7 +53,7 @@ This challenge should be done by using the free to use RecipePuppy API. We would
   - [ ] Integration
   - [ ] Every kind of test you can imagine
   - [x] Testable code.
-- [x] UI: 
+- [x] UI:
   - [x] Use Nibs -not enforced
     - Used programmatically interfaces - Snapkit
   - [x] Avoid fixed sizes (in cases that it's possible)
@@ -63,7 +64,7 @@ This challenge should be done by using the free to use RecipePuppy API. We would
 - [ ] Reason about your choices and defend your opinions and decisions
   - [ ] Why have you used a certain data structure?
   - [ ] Which alternatives did you consider?
-  - [ ] what would you improve if you had more time?
+  - [ ] What would you improve if you had more time?
 
 # Development Story
 
@@ -265,3 +266,23 @@ extension PersitenceServiceInterface {
 >But this is something I just got out of my head now, from here the importance of revisiting code and refactor when needed. This reduces the amounts of duplicated code and hence, the chances of commiting errors, and, of course, is suuuper *swifty* 🚀
 
 This service is injected via the constructor of the Interactor, as well as it's done and explained before with the API Service. So, no need to repeat myself in this matter.
+
+## What would do better with more time?
+
+- I would have figured out a way to layout the content differently, I tried to keep myself as close to the sketch as possible, but the low resolution of the images received by the API was hurting my eyes all the time.
+- I would have considered to set the Image of the cells to adjust in height automatically, but with square images, that would have been something not nice to see for the end-user.
+- Error handling
+  - There's no message presented to the user at any moment
+  - Some error cases could need to be revisited
+- Test coverage
+  - Not even one test made 😫
+- Pagination for loading data from the database of favorites, or avoid mapping it until needed for avoiding extra memory consumption in large datasets.
+- Some more in-depth details into how to actually use some of the interfaces. For example, only the functions in the extension of `PersitenceServiceInterface` should be used by the interactor.
+- Icons & LaunchScreen (Not required, but nice to have)
+- I would have added compatibility with older versions of iOS, as using [SF Symbols](https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/) blocks the compatibility into only iOS 13+. Also, I would have probably made a better use of SF SYmbols, as this was the first time I used them.
+- Split into more VIPER modules and sparse a bit more the code inside the **Interactor**
+- I would have figured out what was actually supposed to go into:
+  
+```swift
+protocol RecipesListPresenterRouterInterface: PresenterRouterInterface {}
+```

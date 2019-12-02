@@ -7,16 +7,18 @@
 
 - [Building a Recipes Book](#building-a-recipes-book)
   - [The challenge](#the-challenge)
-  - [Implicit requiments of the task](#implicit-requiments-of-the-task)
-- [Development Story](#development-story)
-  - [Initial API Analysis](#initial-api-analysis)
-    - [Observations](#observations)
-  - [Documentation of the process](#documentation-of-the-process)
-    - [Project architecture (**VIPER**)](#project-architecture-viper)
-    - [UI (**Snapkit**)](#ui-snapkit)
-    - [Networking](#networking)
-    - [Data Persistence](#data-persistence)
-  - [What would do better with more time?](#what-would-do-better-with-more-time)
+    - [Implicit requiments of the task](#implicit-requiments-of-the-task)
+  - [Development Story](#development-story)
+    - [Initial API Analysis](#initial-api-analysis)
+      - [Observations](#observations)
+    - [Documentation of the process](#documentation-of-the-process)
+      - [Project architecture (**VIPER**)](#project-architecture-viper)
+      - [UI (**Snapkit**)](#ui-snapkit)
+      - [Networking](#networking)
+      - [Data Persistence](#data-persistence)
+      - [Other choices](#other-choices)
+    - [What would I have done better with more time](#what-would-i-have-done-better-with-more-time)
+  - [Final takeaway](#final-takeaway)
 
 ## The challenge
 
@@ -33,7 +35,7 @@ This challenge should be done by using the free to use RecipePuppy API. We would
 4. Each recipe has an href parameter that is an URL pointing to a website with the recipe details. Whenever the user clicks on a recipe use this parameter to open the website in a new view without leaving the app.
 5. Offline functionality, each recipe should have a favorite button and clicking it should save the full recipe offline. Create a separate screen and a way to access it to show the favorite recipes.
 
-## Implicit requiments of the task
+### Implicit requiments of the task
 
 - [x] Use latest Swift code.
 - [x] Project architecture
@@ -61,14 +63,14 @@ This challenge should be done by using the free to use RecipePuppy API. We would
   - [x] Add a local git repository
   - [x] Use a good git flow
     - I'll mark it as done as it's something I can demostrate in other ways, but I forgot to start using it from the beginning.
-- [ ] Reason about your choices and defend your opinions and decisions
-  - [ ] Why have you used a certain data structure?
-  - [ ] Which alternatives did you consider?
-  - [ ] What would you improve if you had more time?
+- [x] Reason about your choices and defend your opinions and decisions
+  - [x] Why have you used a certain data structure?
+  - [x] Which alternatives did you consider?
+  - [x] What would you improve if you had more time?
 
-# Development Story
+## Development Story
 
-## Initial API Analysis
+### Initial API Analysis
 
 > For the analysis of the API has been used the vscode extension **Rest Client** and the app **Insomnia**
 
@@ -80,7 +82,6 @@ Optional Parameters:
 - `i`: comma delimited ingredients
 - `q` : normal search query
 - `p` : page
-
 
 **GET** http://www.recipepuppy.com/api/?i=onions,garlic&p=2
 
@@ -102,7 +103,7 @@ Example Result
 }
 ```
 
-### Observations
+#### Observations
 
 - String content received needs to be trimmed. (`"Roasted Garlic Grilling Sauce\r\n\t\t\r\n\t\r\n\t\t\r\n\t\r\n\t\t\r\n\t\r\n\t\r\n\r\n"`)
 - Result
@@ -128,9 +129,9 @@ But, while asking for the 3 page, it produces results:
   - There's no documented way to know for the amount of pages available. The API just return:
   - It would be needed to try to fetch a couple of pages in advance before reporting as finished the list of recipes
 
-## Documentation of the process
+### Documentation of the process
 
-### Project architecture (**VIPER**) 
+#### Project architecture (**VIPER**)
 
    **Why choosing to use it even if it's not enforced?**
 
@@ -150,19 +151,19 @@ But, while asking for the 3 page, it produces results:
 - As soon as it's used for a couple of use cases, then it feels natural.
 - It makes a lot more clear how to make the code testable.
 
-### UI (**Snapkit**)
+#### UI (**Snapkit**)
 
    **Why choosing to use it over Storyboards?**
 
 | PROS                                                     | CONS                                                        |
-| -------------------------------------------------------  | -----------------------------------------------------------------------------------| 
+| -------------------------------------------------------  | -----------------------------------------------------------------------------------|
 | Less conflicts when merging code from several sources (team work)   | Need to add everything UI related manually                                                                 |
 | The intention is clear and readable at any moment                  | No visual editor
 | Finding an offensive Autolayout rule is easier | Needed to run the project to see the changes reflected and compare with desired result                                                      |
 | The developer tends to think more about what it writes  | It takes more time |
 | Easier to review in a Pull Request (team work)  | The file containing the view gets bigger
 
-### Networking
+#### Networking
 
 At the beginning, and as in many examples around the web, the Networking was placed inside the **Interactor**. This is not a good idea for big projects, or in general, it's good to have a facade over it to allow changes in the API and separation of concerns.
 
@@ -216,7 +217,7 @@ The `RecipesListInteractor` handles then:
 - Curate the ingredients string to pass to the network service, removing spaces, extra commas, etc.
   - The same as before applies. The interactor knows what it can find in that string, the `APIServiceInterface` should not be aware of that. With more time I would have changed the implementation in a way that the ingredients could have been passed one by one as part of a `[String]`, as this reduces a lot of the current problems in the usage of the API.
 
-### Data Persistence
+#### Data Persistence
 
 Since the very beginning I was thinking on using Realm for Data Persistence. But, where's the fun on it? Using CoreData is a good oportunity to showcase threading management and enjoy some nice headaches 🤕.
 
@@ -267,7 +268,22 @@ extension PersitenceServiceInterface {
 
 This service is injected via the constructor of the Interactor, as well as it's done and explained before with the API Service. So, no need to repeat myself in this matter.
 
-## What would do better with more time?
+#### Other choices
+
+There are other choices that I made but to explain it here it would be, maybe too obvious/tedious and I guess it would be wasting space and time, I'll just point some of them out and I'm open to discuss them.
+
+- Why Reactive Programming (RxSwift)?
+- Why I decided to use some technologies/patterns for the first time for the realisation of this project?
+- More details regardings the views (`RecipesListView`, `RecipeCell`, `DetailWebPage`)
+- Why I did not create modules for `DetailWebPage` & `RecipeCell?`
+- External Library for handling Image caching and presentation (KingFisher)
+- Swift Package Manager and why `DEAD_CODE_STRIPPING = NO;` had to be set this way for current version of XCode.
+- Why SPM over Cocoapods?
+- Why Quick & Nimble are added to the project since the beginning?
+- Why I did not attempted to do TDD?
+- etc.
+
+### What would I have done better with more time
 
 - I would have figured out a way to layout the content differently, I tried to keep myself as close to the sketch as possible, but the low resolution of the images received by the API was hurting my eyes all the time.
 - I would have considered to set the Image of the cells to adjust in height automatically, but with square images, that would have been something not nice to see for the end-user.
@@ -286,3 +302,9 @@ This service is injected via the constructor of the Interactor, as well as it's 
 ```swift
 protocol RecipesListPresenterRouterInterface: PresenterRouterInterface {}
 ```
+
+## Final takeaway
+
+I have learned a lot, and I feel like.. as that is always part of my objectives, that this is a total success. 
+
+I'll continue working on this in my spare time, from time to time, as it can be a good point for mentoring, training, or just experiment with some crazy ideas. And, of course, those tests will be added ✅
